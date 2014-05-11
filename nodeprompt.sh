@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Abort if not an interactive shell.
-[[ $- != *i* ]] && exit
+[[ $- != *i* ]] && return
 
 SCRIPT_DIR=$(dirname $BASH_SOURCE)
 
