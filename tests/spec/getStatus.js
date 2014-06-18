@@ -15,9 +15,7 @@ describe( 'Method getStatus', function() {
 		testGetStatus( '## master', {
 			untracked: 0,
 			added: 0,
-			deleted: 0,
 			modified: 0,
-			renamed: 0,
 			ahead: 0,
 			behind: 0,
 			branch: 'master',
@@ -27,9 +25,7 @@ describe( 'Method getStatus', function() {
 		testGetStatus( '## master [ahead 10]', {
 			untracked: 0,
 			added: 0,
-			deleted: 0,
 			modified: 0,
-			renamed: 0,
 			ahead: 10,
 			behind: 0,
 			branch: 'master',
@@ -39,9 +35,7 @@ describe( 'Method getStatus', function() {
 		testGetStatus( '## master [behind 20]', {
 			untracked: 0,
 			added: 0,
-			deleted: 0,
 			modified: 0,
-			renamed: 0,
 			ahead: 0,
 			behind: 20,
 			branch: 'master',
@@ -51,9 +45,7 @@ describe( 'Method getStatus', function() {
 		testGetStatus( '## master [ahead 10, behind 20]', {
 			untracked: 0,
 			added: 0,
-			deleted: 0,
 			modified: 0,
-			renamed: 0,
 			ahead: 10,
 			behind: 20,
 			branch: 'master',
@@ -63,9 +55,7 @@ describe( 'Method getStatus', function() {
 		testGetStatus( '## foo#.1$0', {
 			untracked: 0,
 			added: 0,
-			deleted: 0,
 			modified: 0,
-			renamed: 0,
 			ahead: 0,
 			behind: 0,
 			branch: 'foo#.1$0',
@@ -77,9 +67,7 @@ describe( 'Method getStatus', function() {
 		testGetStatus( '## x/1.11...remote/y/000 [ahead 10]', {
 			untracked: 0,
 			added: 0,
-			deleted: 0,
 			modified: 0,
-			renamed: 0,
 			ahead: 10,
 			behind: 0,
 			branch: 'x/1.11',
@@ -89,9 +77,7 @@ describe( 'Method getStatus', function() {
 		testGetStatus( '## x/1.11...remote/y/000', {
 			untracked: 0,
 			added: 0,
-			deleted: 0,
 			modified: 0,
-			renamed: 0,
 			ahead: 0,
 			behind: 0,
 			branch: 'x/1.11',
@@ -101,9 +87,7 @@ describe( 'Method getStatus', function() {
 		testGetStatus( '## x/1.11...remote/y/000 [ahead 10]', {
 			untracked: 0,
 			added: 0,
-			deleted: 0,
 			modified: 0,
-			renamed: 0,
 			ahead: 10,
 			behind: 0,
 			branch: 'x/1.11',
@@ -113,9 +97,7 @@ describe( 'Method getStatus', function() {
 		testGetStatus( '## x/1.11...remote/y/000 [behind 20]', {
 			untracked: 0,
 			added: 0,
-			deleted: 0,
 			modified: 0,
-			renamed: 0,
 			ahead: 0,
 			behind: 20,
 			branch: 'x/1.11',
@@ -125,9 +107,7 @@ describe( 'Method getStatus', function() {
 		testGetStatus( '## x/1.11...remote/y/000 [ahead 10, behind 20]', {
 			untracked: 0,
 			added: 0,
-			deleted: 0,
 			modified: 0,
-			renamed: 0,
 			ahead: 10,
 			behind: 20,
 			branch: 'x/1.11',
@@ -142,9 +122,7 @@ describe( 'Method getStatus', function() {
 			' M bar.js',
 		{
 			untracked: 0,
-			renamed: 0,
 			added: 0,
-			deleted: 0,
 			modified: 2,
 			ahead: 0,
 			behind: 0,
@@ -159,9 +137,7 @@ describe( 'Method getStatus', function() {
 			'R bam.js',
 		 {
 			untracked: 0,
-			renamed: 1,
-			added: 1,
-			deleted: 0,
+			added: 2,
 			modified: 1,
 			ahead: 0,
 			behind: 0,
@@ -176,9 +152,7 @@ describe( 'Method getStatus', function() {
 			'?? boom.js',
 		{
 			untracked: 1,
-			renamed: 0,
 			added: 1,
-			deleted: 0,
 			modified: 1,
 			ahead: 0,
 			behind: 0,
@@ -195,10 +169,8 @@ describe( 'Method getStatus', function() {
 			'?? boom.js',
 		{
 			untracked: 1,
-			renamed: 0,
 			added: 1,
-			deleted: 2,
-			modified: 1,
+			modified: 3,
 			ahead: 0,
 			behind: 0,
 			branch: 'foo',
@@ -214,10 +186,8 @@ describe( 'Method getStatus', function() {
 			'?? boom.js',
 		{
 			untracked: 1,
-			renamed: 0,
-			added: 1,
-			deleted: 0,
-			modified: 4,
+			added: 3,
+			modified: 3,
 			ahead: 0,
 			behind: 0,
 			branch: 'foo',
@@ -230,9 +200,7 @@ describe( 'Method getStatus', function() {
 		testGetStatus( '## HEAD (no branch)', {
 			untracked: 0,
 			added: 0,
-			deleted: 0,
 			modified: 0,
-			renamed: 0,
 			ahead: 0,
 			behind: 0,
 			branch: 'HEAD', // note: it's wrong
@@ -244,9 +212,7 @@ describe( 'Method getStatus', function() {
 		testGetStatus( '## Initial commit on master', {
 			untracked: 0,
 			added: 0,
-			deleted: 0,
 			modified: 0,
-			renamed: 0,
 			ahead: 0,
 			behind: 0,
 			branch: 'Initial', // note: it's wrong

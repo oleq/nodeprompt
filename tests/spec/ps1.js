@@ -59,7 +59,7 @@ describe( 'Nodeprompt', function() {
 			'merge-head': ''
 		};
 
-		testRunNodeprompt( args, '(master 44c100b +1 -1 M2 ?1)' );
+		testRunNodeprompt( args, '(master 44c100b +4 ?1)' );
 	} );
 
 	it( 'generates PS1 when detached', function() {
@@ -88,7 +88,7 @@ describe( 'Nodeprompt', function() {
 			'merge-head': 'test'
 		};
 
-		testRunNodeprompt( args, '(merge:master<--test dcd0272)' );
+		testRunNodeprompt( args, '(merge:master<--test dcd0272 M1)' );
 	} );
 
 	it( 'generates PS1 while rebasing', function() {
