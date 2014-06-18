@@ -45,7 +45,6 @@ module.exports = {
 	 * * `ahead`		(_Number_)	 	Number of commits ahead of the remote branch.
 	 * * `behind`		(_Number_)	 	Number of commits behind the remote branch.
 	 * * `branch`		(_String_)	 	Name of the branch.
-	 * * `deleted`		(_Number_)	 	Number of deleted files.
 	 * * `detached`		(_Boolean_)	 	Indicates detached state of the branch (HEAD points to a commit, unnamed branch).
 	 * * `diverged`		(_Boolean_)	 	`true` if both `ahead` and `behind` are different than `0`.
 	 * * `git`			(_String_)	 	Contains path to `.git` directory (i.e. to tell if in Git repository).
@@ -55,7 +54,6 @@ module.exports = {
 	 * * `merging`		(_Boolean_)	 	Indicates merge operation.
 	 * * `modified`		(_Number_)	 	Number of modified but unstaged files.
 	 * * `path`			(_String_)	 	Current directory path (see `pathLength` config option).
-	 * * `renamed`		(_Number_)	 	Number of renamed files.
 	 * * `untracked`	(_Number_)	 	Number of untracked files in the repository.
 	 * * `user`			(_String_)	 	Username.
 	 *
@@ -70,10 +68,8 @@ module.exports = {
 				data.merging ? styles.lightMagenta :
 				data.detached ? styles.red :
 				data.modified ? styles.red :
-				data.renamed ? styles.red :
 				data.added ? styles.lightGreen :
 				data.untracked ? styles.lightBlue :
-				data.deleted ? styles.red :
 				styles.darkGray;
 
 			text += statusStyle( '(' );
@@ -104,14 +100,8 @@ module.exports = {
 			if ( data.added )
 				text += styles.lightGreen( ' +' + data.added );
 
-			if ( data.deleted )
-				text += styles.red( ' -' + data.deleted );
-
 			if ( data.modified )
 				text += styles.red( ' M' + data.modified );
-
-			if ( data.renamed )
-				text += styles.red( ' R' + data.renamed );
 
 			if ( data.untracked )
 				text += styles.lightBlue( ' ?' + data.untracked );

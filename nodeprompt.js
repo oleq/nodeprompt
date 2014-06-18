@@ -61,7 +61,7 @@ var NODEPROMPT = {
 		var statusArray = status.split( '\n' ),
 			branchLine = statusArray.shift().slice( 3 );
 
-		data.modified = data.deleted = data.added = data.renamed = data.untracked = 0;
+		data.modified = data.added = data.untracked = 0;
 
 		if ( !data.detached && !data.init ) {
 			var ahead = ( /\[ahead (\d+)/g ).exec( branchLine ),
@@ -72,20 +72,50 @@ var NODEPROMPT = {
 			data.branch = ( /^(.+?)(?:(?=\.{2}| )|$)/g ).exec( branchLine )[ 1 ];
 		}
 
+		// See: http://git-scm.com/docs/git-status.html
+		// For paths with merge conflicts, X and Y show the modification states of each side of the merge.
+		// For paths that do not have merge conflicts, X shows the status of the index, and Y shows the
+		// status of the work tree.
+		// For untracked paths, XY are ??.
+		// Other status codes can be interpreted as follows:
+		// -------------------------------------------------
+		// X          Y     Meaning
+		// -------------------------------------------------
+		//           [MD]   not updated
+		// M        [ MD]   updated in index
+		// A        [ MD]   added to index
+		// D         [ M]   deleted from index
+		// R        [ MD]   renamed in index
+		// C        [ MD]   copied in index
+		// [MARC]           index and work tree matches
+		// [ MARC]     M    work tree changed since index
+		// [ MARC]     D    deleted in work tree
+		// -------------------------------------------------
+		// D           D    unmerged, both deleted *
+		// A           U    unmerged, added by us *
+		// U           D    unmerged, deleted by them
+		// U           A    unmerged, added by them *
+		// D           U    unmerged, deleted by us
+		// A           A    unmerged, both added
+		// U           U    unmerged, both modified
+		// -------------------------------------------------
+		// ?           ?    untracked
+		// !           !    ignored
+		// -------------------------------------------------
+		var recordedInIndex = { 'M': 1, 'A': 1, 'D': 1, 'R': 1, 'C': 1 },
+			modifiedInWorkTree = { 'M': 1, 'A': 1, 'U': 1, 'D': 1 };
+
 		statusArray.forEach( function( item ) {
 			var status = item.slice( 0, 2 );
 
-			// "M " for staged.
-			// " M" for unstaged.
-			// "MM" for changes in staged.
-			~status.indexOf( 'M' ) && data.modified++;
-
-			// "A " for added.
-			// "AM" for added but modified.
-			~status.indexOf( 'A' ) && data.added++;
-			~status.indexOf( 'D' ) && data.deleted++;
-			~status.indexOf( 'R' ) && data.renamed++;
-			~status.indexOf( '??' ) && data.untracked++;
+			if ( status == '??' )
+				data.untracked++;
+			else {
+				if ( status[ 0 ] in recordedInIndex )
+					data.added++;
+				if ( status[ 1 ] in modifiedInWorkTree )
+					data.modified++;
+			}
 		} );
 
 		data.diverged = !!( data.ahead && data.behind );
