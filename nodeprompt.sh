@@ -32,7 +32,7 @@ function setPS1() {
 	# }
 	# time {
 		# Check whether current directory still exists (#2).
-		if [ -d $(pwd) ]; then
+		if [ -d "$PWD" ]; then
 			PS1=$(node $SCRIPT_DIR/nodeprompt.js "${ENV_ARGS[@]}" "${GIT_ARGS[@]}")
 		fi
 	# }
