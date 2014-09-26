@@ -63,7 +63,7 @@ var NODEPROMPT = {
 
 		data.modified = data.added = data.untracked = 0;
 
-		if ( !data.detached && !data.init ) {
+		if ( !data.detached && !data.init && branchLine.length ) {
 			var ahead = ( /\[ahead (\d+)/g ).exec( branchLine ),
 				behind = ( /behind (\d+)\]/g ).exec( branchLine );
 
