@@ -3,9 +3,9 @@
 # Abort if not an interactive shell.
 [[ $- != *i* ]] && return
 
-SCRIPT_DIR=$(dirname $BASH_SOURCE)
+NODEPROMPT_SCRIPT_DIR=$(dirname $BASH_SOURCE)
 
-ENV_ARGS=(
+NODEPROMPT_ENV_ARGS=(
 	"--host=$(hostname -s)"
 	"--user=$USER"
 )
@@ -21,7 +21,14 @@ function setPS1() {
 
 		if [ -n "$GIT_DIR" ]; then
 			GIT_ARGS+=(
-				"--status=$(git status --porcelain --branch 2>/dev/null)"
+				# Truncate lines to avoid "Argument list too long" error, preserving work tree/index
+				# info but discarding file name, which is obsolete for further processing (#4):
+				#
+				# ## master                  ## master
+				#  M foo.js     becomes       M
+				# ?? bar/                    ??
+				"--status=$(git status --porcelain --branch 2>/dev/null |
+					awk '{ if ( NR>1 ) { print substr($0,1,3) } else { print $0 } }')"
 				"--namerev=$(git name-rev --name-only HEAD 2>/dev/null)"
 				"--hash=$(git rev-parse HEAD 2>/dev/null)"
 				"--head=$(cat $GIT_DIR/HEAD 2>/dev/null)"
@@ -33,7 +40,7 @@ function setPS1() {
 	# time {
 		# Check whether current directory still exists (#2).
 		if [ -d "$PWD" ]; then
-			PS1=$(node $SCRIPT_DIR/nodeprompt.js "${ENV_ARGS[@]}" "${GIT_ARGS[@]}")
+			PS1=$($NODEPROMPT_SCRIPT_DIR/nodeprompt.js "${NODEPROMPT_ENV_ARGS[@]}" "${GIT_ARGS[@]}")
 		fi
 	# }
 }
