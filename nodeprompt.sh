@@ -19,7 +19,8 @@ function setPS1() {
 			"--git=$GIT_DIR"
 		)
 
-		if [ -n "$GIT_DIR" ]; then
+		# Check if not in ".git" folder (#7)
+		if [ -n "$GIT_DIR" ] && [ "$GIT_DIR" != "." ]; then
 			GIT_ARGS+=(
 				# Truncate lines to avoid "Argument list too long" error, preserving work tree/index
 				# info but discarding file name, which is obsolete for further processing (#4):

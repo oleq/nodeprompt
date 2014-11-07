@@ -161,4 +161,23 @@ describe( 'Nodeprompt', function() {
 
 		testRunNodeprompt( args, '(a/1234↕ 3bf5643)' );
 	} );
+
+	it( 'generates no PS1 when in .git directory', function() {
+		var args = {
+			'git': '.',
+			'host': 'MYHOST',
+			'status': '## master\n' +
+				'D  asd\n' +
+				'A  bar\n' +
+				'M  zz\n' +
+				'M  dd\n' +
+				'?? qwe',
+			'namerev': 'master',
+			'hash': '44c100b03e7a6ff3d8e1ba0b536ea9b6f830f6ab',
+			'head': 'ref: refs/heads/master',
+			'merge-head': ''
+		};
+
+		testRunNodeprompt( args, '' );
+	} );
 } );

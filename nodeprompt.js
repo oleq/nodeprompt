@@ -129,7 +129,8 @@ var NODEPROMPT = {
 	 */
 	getPS1: function() {
 		var data = {
-			git: !!args.git,
+			// Check if not in ".git" folder (#7).
+			git: !!args.git && args.git != '.',
 			host: args.host,
 			user: args.user
 		};
