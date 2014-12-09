@@ -58,7 +58,7 @@ var NODEPROMPT = {
 	 * @param {String} status
 	 */
 	getStatus: function( data, status ) {
-		var statusArray = status.split( '\n' ),
+		var statusArray = status.split( /\n|\r/ ),
 			branchLine = statusArray.shift().slice( 3 );
 
 		data.modified = data.added = data.untracked = 0;
