@@ -1,6 +1,6 @@
 {
 	"name": "nodeprompt",
-	"version": "0.0.1",
+	"version": "0.0.2",
 	"description": "Pretty Git prompt for Bash",
 	"main": "nodeprompt.js",
 	"dependencies": {
