@@ -9,32 +9,33 @@ Nodeprompt &mdash; Pretty Git prompt for Bash
 
 ## Installation
 
-1. Clone or download the repository.
-1. Call `npm install` to install dependencies.
+1. Call `npm install -g nodeprompt`.
 1. Put the following line
 
-		. /path/to/nodeprompt/nodeprompt.sh
+		. nodeprompt-enable
 
  in your `~/.bashrc` or `~/.bash_profile` file.
-1. Re-open terminal window or source the file, i.e. `source ~/.bashrc`.
+1. Re&ndash;open terminal window or source the file, i.e. `source ~/.bashrc`.
 1. Enjoy your beautiful prompt!
 
 ## Configuration and customization
 
-Config file will let you configure a some simple things like the length of SHA-1 hash or
-the number of levels displayed in path. Still, you can completely re&ndash;write prompt 
-template, if you really want to. You **don't** need to create config file in order to get
-Nodeprompt working.
+Nodeprompt is configurable, i.e. the length of SHA-1 hash or the number of levels 
+displayed in path can be changed. You can completely re&ndash;write the prompt template, 
+if you really want to though.
 
-Nodeprompt config is a plain Node.js module. To configure or customize your prompt, 
-create `config.js` file in `/path/to/nodeprompt/` folder, which defines `module.exports` object
+**Note**: You **don't** need to create any config file in order to get Nodeprompt working.
+It will use `config.default.js`.
+
+Nodeprompt config is a plain Node.js module. To configure/customize your prompt, 
+create `~/.nodeprompt/config.user.js` file with `module.exports` object
 
 	module.exports = {
 		option: 'value'
-	}
+	};
 
-or simply clone `config.default.js`. Please refer to documentation inside `config.default.js`
-to know more about.
+or simply copy `config.default.js`. Please refer to documentation inside `config.default.js`
+to learn more.
 
 ## FAQ
 
@@ -42,7 +43,7 @@ to know more about.
  <br/> 
  **A**: Child Process is really, really slow and makes the prompt laggy. UX is the priority and, as long as Bash
  is faster, that's the right way. I don't like it either.
-2. **Q**: &lt;xyz&gt; sucks in `nodeprompt.sh`. Why?
+2. **Q**: &lt;xyz&gt; sucks in `bin/nodeprompt-enable`. Why?
  <br/> 
  **A**: It's Bash. So what?
 
