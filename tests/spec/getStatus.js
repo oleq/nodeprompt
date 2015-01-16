@@ -1,4 +1,4 @@
-var	NODEPROMPT = require( '../../lib/nodeprompt.js' ),
+var	NODEPROMPT = require( '../../bin/nodeprompt' ),
 	getStatus = NODEPROMPT.getStatus;
 
 function testGetStatus( status, expected ) {

@@ -1,5 +1,4 @@
-//var execFile = require( 'child_process' ).execFile;
-var	NODEPROMPT = require( '../../lib/nodeprompt.js' ),
+var	NODEPROMPT = require( '../../bin/nodeprompt' ),
 	// Don't include user config in tests.
 	config = NODEPROMPT.config = NODEPROMPT.configDefault,
 	getPS1 = NODEPROMPT.getPS1,

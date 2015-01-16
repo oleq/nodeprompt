@@ -1,4 +1,4 @@
-var	NODEPROMPT = require( '../../lib/nodeprompt.js' ),
+var	NODEPROMPT = require( '../../bin/nodeprompt' ),
 	config = NODEPROMPT.config = NODEPROMPT.configDefault,
 	getPath = NODEPROMPT.getPath;
 
