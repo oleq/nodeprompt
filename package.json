@@ -9,8 +9,12 @@
 	"devDependencies": {
 		"jasmine-node": "~1.14.3"
 	},
+	"bin": {
+		"nodeprompt-enable": "bin/nodeprompt-enable",
+		"nodeprompt": "bin/nodeprompt"
+	},
 	"scripts": {
-		"test": "node ./tests/tester.js"
+		"test": "node tests/tester.js"
 	},
 	"repository": {
 		"type": "git",
