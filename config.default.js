@@ -1,8 +1,8 @@
 'use strict';
 
 /**
- * NOTE: This is a default Nodeprompt config. Do not overwrite it,
- *       but create `config.js` file of the same structure with
+ * NOTE: This is a default Nodeprompt config. Do not modify it,
+ *       but create `~/.nodeprompt/config.user.js` file of the same structure with
  *       your values instead.
  */
 module.exports = {
