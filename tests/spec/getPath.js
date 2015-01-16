@@ -1,5 +1,5 @@
-var	NODEPROMPT = require( '../../nodeprompt.js' ),
-	config = NODEPROMPT.config,
+var	NODEPROMPT = require( '../../lib/nodeprompt.js' ),
+	config = NODEPROMPT.config = NODEPROMPT.configDefault,
 	getPath = NODEPROMPT.getPath;
 
 function testGetPath( path, home, expected ) {

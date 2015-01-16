@@ -1,11 +1,12 @@
 //var execFile = require( 'child_process' ).execFile;
-var	NODEPROMPT = require( '../../nodeprompt.js' ),
-	config = NODEPROMPT.config,
+var	NODEPROMPT = require( '../../lib/nodeprompt.js' ),
+	// Don't include user config in tests.
+	config = NODEPROMPT.config = NODEPROMPT.configDefault,
 	getPS1 = NODEPROMPT.getPS1,
 	args = NODEPROMPT.args;
 
 // Colorful output is too messy for testing purposes.
-NODEPROMPT.styles = require( '../../styles.js' )( false );
+NODEPROMPT.styles = require( '../../lib/styles.js' )( false );
 
 function testRunNodeprompt( args, expected ) {
 	for ( var a in NODEPROMPT.args )
