@@ -7,6 +7,10 @@ Nodeprompt &mdash; Pretty Git prompt for Bash
 * Node.js (tested with 0.10.x).
 * Git (tested with 1.9.x).
 
+## Demo
+
+![Nodeprompt demo](demo/demo.gif?raw=true)
+
 ## Installation
 
 1. Call `npm install -g nodeprompt`.
