@@ -69,7 +69,7 @@ var NODEPROMPT = {
 
 			data.ahead = ahead ? parseInt( ahead[ 1 ], 10 ) : 0;
 			data.behind = behind ? parseInt( behind[ 1 ], 10 ) : 0;
-			data.branch = ( /^(.+?)(?:(?=\.{2}| )|$)/g ).exec( branchLine )[ 1 ];
+			data.branch = status && ( /^(.+?)(?:(?=\.{2}| )|$)/g ).exec( branchLine )[ 1 ];
 		}
 
 		// See: http://git-scm.com/docs/git-status.html
