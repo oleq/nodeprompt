@@ -12,13 +12,14 @@ function NODEPROMPT_PS1() {
 	# time {
 		# With "2>/dev/null" errors go to hell.
 		local GIT_DIR="$(git rev-parse --git-dir 2>/dev/null)"
+		local INSIDE_GIT_DIR="$(git rev-parse --is-inside-git-dir 2>/dev/null)"
 
 		local GIT_ARGS=(
-			"--git=$GIT_DIR"
+			"--git=$INSIDE_GIT_DIR"
 		)
 
 		# Check if not in ".git" folder (#7)
-		if [ -n "$GIT_DIR" ] && [ "$GIT_DIR" != "." ]; then
+		if [ "$INSIDE_GIT_DIR" == "false" ]; then
 			GIT_ARGS+=(
 				# Truncate lines to avoid "Argument list too long" error, preserving work tree/index
 				# info but discarding file name, which is obsolete for further processing (#4):
