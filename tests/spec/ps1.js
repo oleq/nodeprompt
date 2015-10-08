@@ -31,7 +31,7 @@ describe( 'Nodeprompt', function() {
 
 	it( 'generates PS1 when repository just inited', function() {
 		var args = {
-			'git': '.git',
+			'git': 'false',
 			'host': 'MYHOST',
 			'status': '## Initial commit on master',
 			'namerev': '',
@@ -45,7 +45,7 @@ describe( 'Nodeprompt', function() {
 
 	it( 'generates PS1 when staged, not staged, deleted, untracked', function() {
 		var args = {
-			'git': '.git',
+			'git': 'false',
 			'host': 'MYHOST',
 			'status': '## master\n' +
 				'D  asd\n' +
@@ -64,7 +64,7 @@ describe( 'Nodeprompt', function() {
 
 	it( 'generates PS1 when detached', function() {
 		var args = {
-			'git': '.git',
+			'git': 'false',
 			'host': 'MYHOST',
 			'status': '## HEAD (no branch)',
 			'namerev': 'master~1',
@@ -78,7 +78,7 @@ describe( 'Nodeprompt', function() {
 
 	it( 'generates PS1 while merging', function() {
 		var args = {
-			'git': '.git',
+			'git': 'false',
 			'host': 'MYHOST',
 			'status': '## master\n' +
 				'UU foo',
@@ -93,7 +93,7 @@ describe( 'Nodeprompt', function() {
 
 	it( 'generates PS1 while rebasing', function() {
 		var args =  {
-			'git': '.git',
+			'git': 'false',
 			'host': 'MYHOST',
 			'status': '## HEAD (no branch)',
 			'namerev': 'master',
@@ -107,7 +107,7 @@ describe( 'Nodeprompt', function() {
 
 	it( 'generates PS1 while bisecting', function() {
 		var args = {
-			'git': '.git',
+			'git': 'false',
 			'host': 'MYHOST',
 			'status': '## a/1234...remote/a/1234 [ahead 10, behind 20]',
 			'namerev': 'a/1234',
@@ -122,7 +122,7 @@ describe( 'Nodeprompt', function() {
 
 	it( 'generates PS1 when branch is ahead', function() {
 		var args = {
-			'git': '.git',
+			'git': 'false',
 			'host': 'MYHOST',
 			'status': '## a/1234...remote/a/1234 [ahead 4]',
 			'namerev': 'a/1234',
@@ -136,7 +136,7 @@ describe( 'Nodeprompt', function() {
 
 	it( 'generates PS1 when branch is behind', function() {
 		var args = {
-			'git': '.git',
+			'git': 'false',
 			'host': 'MYHOST',
 			'status': '## a/1234...remote/a/1234 [behind 4]',
 			'namerev': 'a/1234',
@@ -150,7 +150,7 @@ describe( 'Nodeprompt', function() {
 
 	it( 'generates PS1 when branch diverged', function() {
 		var args = {
-			'git': '.git',
+			'git': 'false',
 			'host': 'MYHOST',
 			'status': '## a/1234...remote/a/1234 [ahead 10, behind 20]',
 			'namerev': 'a/1234',
@@ -164,7 +164,7 @@ describe( 'Nodeprompt', function() {
 
 	it( 'generates no PS1 when in .git directory', function() {
 		var args = {
-			'git': '.',
+			'git': 'true',
 			'host': 'MYHOST',
 			'status': '## master\n' +
 				'D  asd\n' +
