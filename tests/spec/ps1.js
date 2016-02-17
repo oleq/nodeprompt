@@ -180,4 +180,22 @@ describe( 'Nodeprompt', function() {
 
 		testRunNodeprompt( args, '' );
 	} );
+
+	// #9
+	it( 'generates no PS1 when in .git/* subfolder', function() {
+		// Save PWD
+		const PWD = process.env.PWD;
+
+		process.env.PWD = '/Users/nodeprompt-user/repo/.git/hooks';
+
+		var args = {
+			'git': '/Users/nodeprompt-user/repo/.git',
+			'host': 'MYHOST'
+		};
+
+		testRunNodeprompt( args, '' );
+
+		// Revert PWD
+		process.env.PWD = PWD;
+	} );
 } );
