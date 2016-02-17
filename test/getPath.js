@@ -1,16 +1,10 @@
-var	NODEPROMPT = require( '../../bin/nodeprompt' ),
-	config = NODEPROMPT.config = NODEPROMPT.configDefault,
-	getPath = NODEPROMPT.getPath;
+'use strict';
 
-function testGetPath( path, home, expected ) {
-	var data = {};
+const config = NODEPROMPT.config = NODEPROMPT.configDefault;
+const getPath = NODEPROMPT.getPath;
 
-	getPath.call( NODEPROMPT, data, path, home );
-	expect( data.path ).toBe( expected );
-}
-
-describe( 'Method getPath', function() {
-	it( 'returns path with default config (out of home)', function() {
+describe( 'getPath', () => {
+	it( 'returns path with default config (out of home)', () => {
 		testGetPath( '/', 						'/x', 				'/' );
 		testGetPath( '/a', 						'/x', 				'/a' );
 		testGetPath( '/a/b', 					'/x', 				'/a/b' );
@@ -23,7 +17,7 @@ describe( 'Method getPath', function() {
 		testGetPath( '/a/x/y/c', 				'/x/y', 			'/...x/y/c' );
 	} );
 
-	it( 'returns path with default config (in home)', function() {
+	it( 'returns path with default config (in home)', () => {
 		testGetPath( '/', 						'/a/b', 			'/' );
 		testGetPath( '/a', 						'/a/b', 			'/a' );
 		testGetPath( '/a/b', 					'/a/b', 			'~' );
@@ -34,8 +28,8 @@ describe( 'Method getPath', function() {
 		testGetPath( '/a/b/c/d/e/f/g',			'/a/b', 			'~/...e/f/g' );
 	} );
 
-	it( 'returns path with custom config', function() {
-		var defaultPathLength = config.pathLength;
+	it( 'returns path with custom config', () => {
+		const defaultPathLength = config.pathLength;
 
 		config.pathLength = 1;
 		testGetPath( '/', 						'/x',	 			'/' );
@@ -54,3 +48,10 @@ describe( 'Method getPath', function() {
 		config.pathLength = defaultPathLength;
 	} );
 } );
+
+function testGetPath( path, home, expected ) {
+	const data = {};
+
+	getPath.call( NODEPROMPT, data, path, home );
+	expect( data.path ).to.be.equal( expected );
+}

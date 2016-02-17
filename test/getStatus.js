@@ -1,16 +1,9 @@
-var	NODEPROMPT = require( '../../bin/nodeprompt' ),
-	getStatus = NODEPROMPT.getStatus;
+'use strict';
 
-function testGetStatus( status, expected ) {
-	var data = {};
+const getStatus = NODEPROMPT.getStatus;
 
-	getStatus.call( NODEPROMPT, data, status );
-
-	expect( data ).toEqual( expected );
-}
-
-describe( 'Method getStatus', function() {
-	it( 'returns status when no remote', function() {
+describe( 'getStatus', () => {
+	it( 'returns status when no remote', () => {
 		testGetStatus( '## master', {
 			untracked: 0,
 			added: 0,
@@ -62,7 +55,7 @@ describe( 'Method getStatus', function() {
 		} );
 	} );
 
-	it( 'returns status when remote', function() {
+	it( 'returns status when remote', () => {
 		testGetStatus( '## x/1.11...remote/y/000 [ahead 10]', {
 			untracked: 0,
 			added: 0,
@@ -114,7 +107,7 @@ describe( 'Method getStatus', function() {
 		} );
 	} );
 
-	it( 'returns status when not clean', function() {
+	it( 'returns status when not clean', () => {
 		testGetStatus(
 			'## foo\n' +
 			' M foo.js\n' +
@@ -195,7 +188,7 @@ describe( 'Method getStatus', function() {
 
 	} );
 
-	it( 'returns status when detached or rebasing', function() {
+	it( 'returns status when detached or rebasing', () => {
 		testGetStatus( '## HEAD (no branch)', {
 			untracked: 0,
 			added: 0,
@@ -207,7 +200,7 @@ describe( 'Method getStatus', function() {
 		} );
 	} );
 
-	it( 'returns status when repo inited', function() {
+	it( 'returns status when repo inited', () => {
 		testGetStatus( '## Initial commit on master', {
 			untracked: 0,
 			added: 0,
@@ -219,3 +212,11 @@ describe( 'Method getStatus', function() {
 		} );
 	} );
 } );
+
+function testGetStatus( status, expected ) {
+	const data = {};
+
+	getStatus.call( NODEPROMPT, data, status );
+
+	expect( data ).to.deep.equal( expected );
+}

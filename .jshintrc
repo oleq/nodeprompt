@@ -1,0 +1,26 @@
+{
+	"node": true,
+	"esnext": true,
+
+	"immed": true,
+	"latedef": "nofunc",
+	"loopfunc": true,
+	"noarg": true,
+	"nonbsp": true,
+	"undef": true,
+	"unused": true,
+	"strict": "global",
+	"varstmt": true,
+
+	"globals": {
+		"NODEPROMPT": true,
+		"after": false,
+		"afterEach": false,
+		"before": false,
+		"beforeEach": false,
+		"describe": false,
+		"expect": false,
+		"it": false,
+		"sinon": false
+	}
+}

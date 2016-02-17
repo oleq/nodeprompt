@@ -2,16 +2,22 @@
 
 'use strict';
 
-var args = require( 'optimist' ).argv,
-	styles = require( '../lib/styles.js' )( !args.raw ),
-	configDefault = require( './../config.default.js' ),
-	configUser = {};
+const args = require( 'optimist' ).argv;
+const styles = require( '../lib/styles.js' )( !args.raw );
+const configDefault = require( './../config.default.js' );
+const aheadRegex = /\[ahead (\d+)/;
+const behindRegex = /behind (\d+)\]/;
+const branchRegex = /^(.+?)(?:(?=\.{2}| )|$)/;
+const recordedInIndex = { 'M': 1, 'A': 1, 'D': 1, 'R': 1, 'C': 1 };
+const modifiedInWorkTree = { 'M': 1, 'A': 1, 'U': 1, 'D': 1 };
+
+let configUser = {};
 
 try {
 	configUser = require( ( process.env.HOME || process.env.HOMEPATH || process.env.USERPROFILE ) + '/.nodeprompt/config.user.js' );
 } catch ( e ) {}
 
-var NODEPROMPT = {
+const NODEPROMPT = {
 	/**
 	 * Re-shapes given `path` according to `config#pathLength`,
 	 * and stores it in `data` object.
@@ -20,12 +26,13 @@ var NODEPROMPT = {
 	 * @param {String} path
 	 * @param {String} home
 	 */
-	getPath: function( data, path, home ) {
-		var homeRegex = new RegExp( '^' + home ),
-			inHome = path.match( homeRegex );
+	getPath( data, path, home ) {
+		const homeRegex = new RegExp( '^' + home );
+		const inHome = path.match( homeRegex );
 
-		if ( inHome )
+		if ( inHome ) {
 			path = path.replace( homeRegex, '' );
+		}
 
 		path = path.split( '/' );
 
@@ -57,19 +64,20 @@ var NODEPROMPT = {
 	 * @param {Object} data
 	 * @param {String} status
 	 */
-	getStatus: function( data, status ) {
-		var statusArray = status.split( '\n' ),
-			branchLine = statusArray.shift().slice( 3 );
+	getStatus( data, status ) {
+		const statusArray = status.split( '\n' );
+		const branchLine = statusArray.shift().slice( 3 );
 
 		data.modified = data.added = data.untracked = 0;
 
 		if ( !data.detached && !data.init ) {
-			var ahead = ( /\[ahead (\d+)/g ).exec( branchLine ),
-				behind = ( /behind (\d+)\]/g ).exec( branchLine );
+			const ahead = branchLine.match( aheadRegex );
+			const behind = branchLine.match( behindRegex );
 
 			data.ahead = ahead ? parseInt( ahead[ 1 ], 10 ) : 0;
 			data.behind = behind ? parseInt( behind[ 1 ], 10 ) : 0;
-			data.branch = ( /^(.+?)(?:(?=\.{2}| )|$)/g ).exec( branchLine )[ 1 ];
+
+			data.branch = branchLine.match( branchRegex )[ 0 ];
 		}
 
 		// See: http://git-scm.com/docs/git-status.html
@@ -102,11 +110,8 @@ var NODEPROMPT = {
 		// ?           ?    untracked
 		// !           !    ignored
 		// -------------------------------------------------
-		var recordedInIndex = { 'M': 1, 'A': 1, 'D': 1, 'R': 1, 'C': 1 },
-			modifiedInWorkTree = { 'M': 1, 'A': 1, 'U': 1, 'D': 1 };
-
-		statusArray.forEach( function( item ) {
-			var status = item.slice( 0, 2 );
+		statusArray.forEach( item => {
+			const status = item.slice( 0, 2 );
 
 			if ( status == '??' )
 				data.untracked++;
@@ -127,8 +132,8 @@ var NODEPROMPT = {
 	 *
 	 * @returns {String}
 	 */
-	getPS1: function() {
-		var data = {
+	getPS1() {
+		const data = {
 			// Check if not in ".git" folder (#7, #9).
 			git: !!args.git && args.git !== '.' && process.env.PWD.indexOf( args.git ) === -1,
 			host: args.host,
@@ -189,11 +194,12 @@ var NODEPROMPT = {
 	args: args
 };
 
-for ( var c in NODEPROMPT.configDefault ) {
+for ( let c in NODEPROMPT.configDefault ) {
 	NODEPROMPT.config[ c ] = NODEPROMPT.configUser[ c ] || NODEPROMPT.configDefault[ c ];
 }
 
-if ( module.parent )
+if ( module.parent ) {
 	module.exports = NODEPROMPT;
-else
+} else {
 	process.stdout.write( NODEPROMPT.getPS1() );
+}
