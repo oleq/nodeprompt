@@ -16,7 +16,9 @@ Nodeprompt &mdash; Pretty Git prompt for Bash
 1. Call `npm install -g nodeprompt`.
 1. Put the following line
 
-    . nodeprompt-enable
+```
+. nodeprompt-enable
+```
 
  in your `~/.bashrc` or `~/.bash_profile` file.
 1. Re&ndash;open terminal window or source the file, i.e. `source ~/.bashrc`.
@@ -30,9 +32,11 @@ Nodeprompt is configurable, so things like the length of SHA-1 hash or the numbe
 
 Config file is a plain Node.js module. To configure your prompt, create `~/.nodeprompt/config.user.js` file with `module.exports` declaration
 
-	module.exports = {
-		option: 'value'
-	};
+```js
+module.exports = {
+    option: 'value'
+};
+```
 
 or simply copy `config.default.js` there and modify it. Refer to documentation inside [`config.default.js`](https://github.com/oleq/nodeprompt/blob/master/config.default.js) to learn more.
 
