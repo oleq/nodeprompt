@@ -60,11 +60,11 @@ module.exports = {
 	 * @param {Object} style An object consisting of a number of functions, all of which accept and return
 	 * _String_, dedicated to change style, background or text color. See `styles.js` to know more.
 	 */
-	template: function( data, styles ) {
-		var text = '';
+	template( data, styles ) {
+		let text = '';
 
 		if ( data.git ) {
-			var statusStyle =
+			const statusStyle =
 				data.merging ? styles.lightMagenta :
 				data.detached ? styles.red :
 				data.modified ? styles.red :

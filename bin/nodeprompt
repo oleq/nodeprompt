@@ -3,20 +3,14 @@
 'use strict';
 
 const args = require( 'optimist' ).argv;
-const styles = require( '../lib/styles.js' )( !args.raw );
+const styles = require( '../lib/styles.js' )( false );
 const configDefault = require( './../config.default.js' );
 const aheadRegex = /\[ahead (\d+)/;
 const behindRegex = /behind (\d+)\]/;
 const branchRegex = /^(.+?)(?:(?=\.{2}| )|$)/;
-const recordedInIndex = { 'M': 1, 'A': 1, 'D': 1, 'R': 1, 'C': 1 };
-const modifiedInWorkTree = { 'M': 1, 'A': 1, 'U': 1, 'D': 1 };
-
-let configUser = {};
-
-try {
-	configUser = require( ( process.env.HOME || process.env.HOMEPATH || process.env.USERPROFILE ) + '/.nodeprompt/config.user.js' );
-} catch ( e ) {}
-
+const recordedInIndex = { M: 1, A: 1, D: 1, R: 1, C: 1 };
+const modifiedInWorkTree = { M: 1, A: 1, U: 1, D: 1 };
+const env = process.env;
 const NODEPROMPT = {
 	/**
 	 * Re-shapes given `path` according to `config#pathLength`,
@@ -135,12 +129,12 @@ const NODEPROMPT = {
 	getPS1() {
 		const data = {
 			// Check if not in ".git" folder (#7, #9).
-			git: !!args.git && args.git !== '.' && process.env.PWD.indexOf( args.git ) === -1,
+			git: !!args.git && args.git !== '.' && env.PWD.indexOf( args.git ) === -1,
 			host: args.host,
 			user: args.user
 		};
 
-		this.getPath( data, process.env.PWD, process.env.HOME );
+		this.getPath( data, env.PWD, env.HOME );
 
 		if ( data.git ) {
 			data.namerev = args.namerev;
@@ -174,7 +168,7 @@ const NODEPROMPT = {
 	 *
 	 * @property {Object}
 	 */
-	configUser: configUser,
+	configUser: null,
 
 	/**
 	 * Configuration object. See `config.default.js` file to know more.
@@ -194,8 +188,14 @@ const NODEPROMPT = {
 	args: args
 };
 
-for ( let c in NODEPROMPT.configDefault ) {
-	NODEPROMPT.config[ c ] = NODEPROMPT.configUser[ c ] || NODEPROMPT.configDefault[ c ];
+try {
+	NODEPROMPT.configUser = require(
+		( env.HOME || env.HOMEPATH || env.USERPROFILE ) + '/.nodeprompt/config.user.js'
+	);
+
+	Object.assign( NODEPROMPT.config, NODEPROMPT.configDefault, NODEPROMPT.configUser );
+} catch ( e ) {
+	NODEPROMPT.config = NODEPROMPT.configDefault;
 }
 
 if ( module.parent ) {

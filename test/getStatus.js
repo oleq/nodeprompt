@@ -1,10 +1,8 @@
 'use strict';
 
-const getStatus = NODEPROMPT.getStatus;
-
 describe( 'getStatus', () => {
 	it( 'returns status when no remote', () => {
-		testGetStatus( '## master', {
+		test( '## master', {
 			untracked: 0,
 			added: 0,
 			modified: 0,
@@ -14,7 +12,7 @@ describe( 'getStatus', () => {
 			diverged: false,
 		} );
 
-		testGetStatus( '## master [ahead 10]', {
+		test( '## master [ahead 10]', {
 			untracked: 0,
 			added: 0,
 			modified: 0,
@@ -24,7 +22,7 @@ describe( 'getStatus', () => {
 			diverged: false,
 		} );
 
-		testGetStatus( '## master [behind 20]', {
+		test( '## master [behind 20]', {
 			untracked: 0,
 			added: 0,
 			modified: 0,
@@ -34,7 +32,7 @@ describe( 'getStatus', () => {
 			diverged: false,
 		} );
 
-		testGetStatus( '## master [ahead 10, behind 20]', {
+		test( '## master [ahead 10, behind 20]', {
 			untracked: 0,
 			added: 0,
 			modified: 0,
@@ -44,7 +42,7 @@ describe( 'getStatus', () => {
 			diverged: true,
 		} );
 
-		testGetStatus( '## foo#.1$0', {
+		test( '## foo#.1$0', {
 			untracked: 0,
 			added: 0,
 			modified: 0,
@@ -56,7 +54,7 @@ describe( 'getStatus', () => {
 	} );
 
 	it( 'returns status when remote', () => {
-		testGetStatus( '## x/1.11...remote/y/000 [ahead 10]', {
+		test( '## x/1.11...remote/y/000 [ahead 10]', {
 			untracked: 0,
 			added: 0,
 			modified: 0,
@@ -66,7 +64,7 @@ describe( 'getStatus', () => {
 			diverged: false,
 		} );
 
-		testGetStatus( '## x/1.11...remote/y/000', {
+		test( '## x/1.11...remote/y/000', {
 			untracked: 0,
 			added: 0,
 			modified: 0,
@@ -76,7 +74,7 @@ describe( 'getStatus', () => {
 			diverged: false,
 		} );
 
-		testGetStatus( '## x/1.11...remote/y/000 [ahead 10]', {
+		test( '## x/1.11...remote/y/000 [ahead 10]', {
 			untracked: 0,
 			added: 0,
 			modified: 0,
@@ -86,7 +84,7 @@ describe( 'getStatus', () => {
 			diverged: false,
 		} );
 
-		testGetStatus( '## x/1.11...remote/y/000 [behind 20]', {
+		test( '## x/1.11...remote/y/000 [behind 20]', {
 			untracked: 0,
 			added: 0,
 			modified: 0,
@@ -96,7 +94,7 @@ describe( 'getStatus', () => {
 			diverged: false,
 		} );
 
-		testGetStatus( '## x/1.11...remote/y/000 [ahead 10, behind 20]', {
+		test( '## x/1.11...remote/y/000 [ahead 10, behind 20]', {
 			untracked: 0,
 			added: 0,
 			modified: 0,
@@ -108,7 +106,7 @@ describe( 'getStatus', () => {
 	} );
 
 	it( 'returns status when not clean', () => {
-		testGetStatus(
+		test(
 			'## foo\n' +
 			' M foo.js\n' +
 			' M bar.js',
@@ -122,7 +120,7 @@ describe( 'getStatus', () => {
 			diverged: false,
 		} );
 
-		testGetStatus(
+		test(
 			'## foo\n' +
 			'A foo.js\n' +
 			' M bar.js\n' +
@@ -137,7 +135,7 @@ describe( 'getStatus', () => {
 			diverged: false,
 		} );
 
-		testGetStatus(
+		test(
 			'## foo\n' +
 			'A foo.js\n' +
 			' M bar.js\n' +
@@ -152,7 +150,7 @@ describe( 'getStatus', () => {
 			diverged: false,
 		} );
 
-		testGetStatus(
+		test(
 			'## foo\n' +
 			'A foo.js\n' +
 			' M bar.js\n' +
@@ -169,7 +167,7 @@ describe( 'getStatus', () => {
 			diverged: false,
 		} );
 
-		testGetStatus(
+		test(
 			'## foo\n' +
 			'MM foo.js\n' +
 			' M bar.js\n' +
@@ -189,7 +187,7 @@ describe( 'getStatus', () => {
 	} );
 
 	it( 'returns status when detached or rebasing', () => {
-		testGetStatus( '## HEAD (no branch)', {
+		test( '## HEAD (no branch)', {
 			untracked: 0,
 			added: 0,
 			modified: 0,
@@ -201,7 +199,7 @@ describe( 'getStatus', () => {
 	} );
 
 	it( 'returns status when repo inited', () => {
-		testGetStatus( '## Initial commit on master', {
+		test( '## Initial commit on master', {
 			untracked: 0,
 			added: 0,
 			modified: 0,
@@ -213,10 +211,10 @@ describe( 'getStatus', () => {
 	} );
 } );
 
-function testGetStatus( status, expected ) {
+function test( status, expected ) {
 	const data = {};
 
-	getStatus.call( NODEPROMPT, data, status );
+	NODEPROMPT.getStatus( data, status );
 
 	expect( data ).to.deep.equal( expected );
 }
