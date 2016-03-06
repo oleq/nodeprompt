@@ -16,9 +16,9 @@ Nodeprompt &mdash; Pretty Git prompt for Bash
 1. Call `npm install -g nodeprompt`.
 1. Put the following line
 
-```
-. nodeprompt-enable
-```
+  ```
+  . nodeprompt-enable
+  ```
 
  in your `~/.bashrc` or `~/.bash_profile` file.
 1. Re&ndash;open terminal window or source the file, i.e. `source ~/.bashrc`.
