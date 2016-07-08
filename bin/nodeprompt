@@ -127,9 +127,17 @@ const NODEPROMPT = {
 	 * @returns {String}
 	 */
 	getPS1() {
+		const pwd = env.PWD.toLowerCase();
+		const git = args.git.toLowerCase();
 		const data = {
 			// Check if not in ".git" folder (#7, #9).
-			git: !!args.git && args.git !== '.' && env.PWD.indexOf( args.git ) === -1,
+			git: !!git && git !== '.' &&
+				(
+					git === '.git' ?
+						( pwd.slice( -4 ) != git )
+					:
+						( pwd.indexOf( git ) === -1 )
+				),
 			host: args.host,
 			user: args.user
 		};

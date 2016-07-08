@@ -157,6 +157,50 @@ describe( 'getPS1', () => {
 		// Revert PWD
 		process.env.PWD = PWD;
 	} );
+
+	it( 'generates no PS1 when in .git/* subfolder (letter case)', () => {
+		// Save PWD
+		const PWD = process.env.PWD;
+
+		process.env.PWD = '/Users/nodeprompt-user/REPO/.git/hooks';
+
+		const args = {
+			git: '/Users/nodeprompt-user/repo/.git',
+			host: 'MYHOST'
+		};
+
+		test( args, '' );
+
+		// Revert PWD
+		process.env.PWD = PWD;
+	} );
+
+	it( 'generates PS1 when in folder containing ".git" string', () => {
+		// Save PWD
+		const PWD = process.env.PWD;
+
+		process.env.PWD = '/Users/nodeprompt-user/foo.github.io';
+
+		const args = {
+			git: '.git',
+			host: 'MYHOST',
+			status: '## master\n' +
+				'D  asd\n' +
+				'A  bar\n' +
+				'M  zz\n' +
+				'M  dd\n' +
+				'?? qwe',
+			namerev: 'master',
+			hash: '44c100b03e7a6ff3d8e1ba0b536ea9b6f830f6ab',
+			head: 'ref: refs/heads/master',
+			'merge-head': ''
+		};
+
+		test( args, '(master 44c100b +4 ?1)' );
+
+		// Revert PWD
+		process.env.PWD = PWD;
+	} );
 } );
 
 function test( args, expected ) {
