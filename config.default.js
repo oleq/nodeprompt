@@ -120,7 +120,7 @@ module.exports = {
 			text += statusStyle( ') ' );
 		}
 
-		text += styles.lightGreen( `${ model.user }@${ model.hostname }` );
+		text += styles.lightGreen( `${ model.username }@${ model.hostname }` );
 		text += ' ' + styles.lightCyan( `${ model.path }${ this.promptChar } ` );
 
 		return text;

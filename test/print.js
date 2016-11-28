@@ -231,7 +231,7 @@ function test( methods, expected ) {
 	const nodeprompt = new Nodeprompt();
 
 	Object.assign( nodeprompt.model, {
-		user: 'user',
+		username: 'user',
 		hostname: 'host',
 		path: '/path'
 	} );
