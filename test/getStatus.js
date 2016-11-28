@@ -1,3 +1,6 @@
+/**
+ * @license Copyright (c) 2003-2016, Aleksander Nowodziński. All rights reserved.
+ */
 'use strict';
 
 const Nodeprompt = require( '../lib/nodeprompt.js' );
@@ -262,12 +265,13 @@ describe( '_getStatus()', () => {
 
 function test( status, expected ) {
 	const model = {};
+	const stub = sinon.stub( nodeprompt, '_getRawStatus' ).returns( status );
 
-	// Stub
-	nodeprompt._getRawStatus = () => status;
 	nodeprompt._getStatus( model );
 
 	for ( let exp in expected ) {
 		expect( model[ exp ] ).to.equal( expected[ exp ] );
 	}
+
+	stub.restore();
 }

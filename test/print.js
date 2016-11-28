@@ -1,15 +1,12 @@
+/**
+ * @license Copyright (c) 2003-2016, Aleksander Nowodziński. All rights reserved.
+ */
 'use strict';
 
 const stylesRaw = require( '../lib/styles.js' )( true );
 const Nodeprompt = require( '../lib/nodeprompt.js' );
 
-let nodeprompt;
-
 describe( 'print()', () => {
-	beforeEach( () => {
-		nodeprompt = new Nodeprompt();
-	} );
-
 	it( 'generates PS1 when not Git repository', () => {
 		test(
 			{
@@ -217,16 +214,21 @@ describe( 'print()', () => {
 } );
 
 function test( methods, expected ) {
-	// Stubs
+	const sandbox = sinon.sandbox.create();
+
 	for ( let m in methods ) {
-		nodeprompt[ m ]	= methods[ m ];
+		sandbox.stub( Nodeprompt.prototype, m, methods[ m ] );
 	}
 
-	nodeprompt.model = nodeprompt._getModel();
+	const nodeprompt = new Nodeprompt();
 
-	nodeprompt.model.user = 'user';
-	nodeprompt.model.hostname = 'host';
-	nodeprompt.model.path = '/path';
+	Object.assign( nodeprompt.model, {
+		user: 'user',
+		hostname: 'host',
+		path: '/path'
+	} );
 
 	expect( nodeprompt.print( stylesRaw ) ).to.equal( expected );
+
+	sandbox.restore();
 }

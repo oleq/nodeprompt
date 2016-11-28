@@ -9,7 +9,8 @@
   "devDependencies": {
     "chai": "^3.5.0",
     "jshint": "^2.9.1",
-    "mocha": "^2.4.5"
+    "mocha": "^2.4.5",
+    "sinon": "^1.17.6"
   },
   "bin": {
     "nodeprompt-enable": "bin/nodeprompt-enable",
