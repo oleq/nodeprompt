@@ -6,7 +6,17 @@
 const stylesRaw = require( '../lib/styles.js' )( true );
 const Nodeprompt = require( '../lib/nodeprompt.js' );
 
+let sandbox;
+
 describe( 'print()', () => {
+	beforeEach( () => {
+		sandbox = sinon.sandbox.create();
+	} );
+
+	afterEach( () => {
+		sandbox.restore();
+	} );
+
 	it( 'generates PS1 when not Git repository', () => {
 		test(
 			{
@@ -214,8 +224,6 @@ describe( 'print()', () => {
 } );
 
 function test( methods, expected ) {
-	const sandbox = sinon.sandbox.create();
-
 	for ( let m in methods ) {
 		sandbox.stub( Nodeprompt.prototype, m, methods[ m ] );
 	}
@@ -229,6 +237,4 @@ function test( methods, expected ) {
 	} );
 
 	expect( nodeprompt.print( stylesRaw ) ).to.equal( expected );
-
-	sandbox.restore();
 }

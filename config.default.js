@@ -70,7 +70,7 @@ module.exports = {
 
 		if ( model.isGit ) {
 			const statusStyle =
-				model.mergeHead ? styles.lightMagenta :
+				model.isMerging ? styles.lightMagenta :
 				model.isDetached ? styles.red :
 				model.modified ? styles.red :
 				model.added ? styles.lightGreen :
@@ -84,7 +84,7 @@ module.exports = {
 				text += 'init';
 			} else if ( model.isDetached ) {
 				text += statusStyle( `detached:${ model.namerev }` );
-			} else if ( model.mergeHead ) {
+			} else if ( model.isMerging ) {
 				text += statusStyle( `merge:${ model.namerev }<--${ model.mergeHead }` );
 			} else {
 				text += statusStyle( model.branch );
