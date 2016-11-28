@@ -1,6 +1,14 @@
 'use strict';
 
-describe( 'getPath', () => {
+const Nodeprompt = require( '../lib/nodeprompt.js' );
+
+let nodeprompt;
+
+describe( '_getPath()', () => {
+	beforeEach( () => {
+		nodeprompt = new Nodeprompt();
+	} );
+
 	it( 'returns path with default config (out of home)', () => {
 		test( '/', 						'/x', 				'/' );
 		test( '/a', 					'/x', 				'/a' );
@@ -26,9 +34,9 @@ describe( 'getPath', () => {
 	} );
 
 	it( 'returns path with custom config', () => {
-		const defaultPathLength = NODEPROMPT.config.pathLength;
+		const defaultPathLength = nodeprompt.config.pathLength;
 
-		NODEPROMPT.config.pathLength = 1;
+		nodeprompt.config.pathLength = 1;
 		test( '/', 						'/x',	 			'/' );
 		test( '/a', 					'/x', 				'/a' );
 		test( '/a/b', 					'/x', 				'/...b' );
@@ -38,17 +46,14 @@ describe( 'getPath', () => {
 		test( '/a/b', 					'/a', 				'~/b' );
 		test( '/a/b/c', 				'/a', 				'~/...c' );
 
-		NODEPROMPT.config.pathLength = 5;
+		nodeprompt.config.pathLength = 5;
 		test( '/a/b/c/d/e/f/g', 		'/x', 				'/...c/d/e/f/g' );
 		test( '/a/b/c/d/e/f/g/h', 		'/a/b', 			'~/...d/e/f/g/h' );
 
-		NODEPROMPT.config.pathLength = defaultPathLength;
+		nodeprompt.config.pathLength = defaultPathLength;
 	} );
 } );
 
-function test( path, home, expected ) {
-	const data = {};
-
-	NODEPROMPT.getPath( data, path, home );
-	expect( data.path ).to.be.equal( expected );
+function test( pwd, home, expected ) {
+	expect( nodeprompt._getPath( { pwd, home } ) ).to.equal( expected );
 }

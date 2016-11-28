@@ -34,19 +34,19 @@ module.exports = {
 	promptChar: '>',
 
 	/**
-	 * Template (V-layer :P) of the prompt. A function, which converts status data into
+	 * Template (V-layer :P) of the prompt. A function, which converts status model into
 	 * a nice, colourful prompt string. You can take control of the look and feel of your
 	 * bash prompt by creating your own `template` function.
 	 *
 	 * @cfg {Function} template
-	 * @param {Object} data Status data object, which consists of the following items:
+	 * @param {Object} model Status model object, which consists of the following items:
 	 *
 	 * * `added`		(_Number_)	 	Number of files staged for the commit.
 	 * * `ahead`		(_Number_)	 	Number of commits ahead of the remote branch.
 	 * * `behind`		(_Number_)	 	Number of commits behind the remote branch.
 	 * * `branch`		(_String_)	 	Name of the branch.
 	 * * `detached`		(_Boolean_)	 	Indicates detached state of the branch (HEAD points to a commit, unnamed branch).
-	 * * `diverged`		(_Boolean_)	 	`true` if both `ahead` and `behind` are different than `0`.
+	 * * `hasDiverged`		(_Boolean_)	 	`true` if both `ahead` and `behind` are different than `0`.
 	 * * `git`			(_String_)	 	Contains path to `.git` directory (i.e. to tell if in Git repository).
 	 * * `hash`			(_String_)	 	SHA-1 hash of the current commit (see `hashLength` config option).
 	 * * `host`			(_String_)	 	Name of the host.
@@ -60,57 +60,63 @@ module.exports = {
 	 * @param {Object} style An object consisting of a number of functions, all of which accept and return
 	 * _String_, dedicated to change style, background or text color. See `styles.js` to know more.
 	 */
-	template( data, styles ) {
+	template( model, styles ) {
 		let text = '';
 
-		if ( data.git ) {
+		if ( model.isGit ) {
 			const statusStyle =
-				data.merging ? styles.lightMagenta :
-				data.detached ? styles.red :
-				data.modified ? styles.red :
-				data.added ? styles.lightGreen :
-				data.untracked ? styles.lightBlue :
+				model.mergeHead ? styles.lightMagenta :
+				model.isDetached ? styles.red :
+				model.modified ? styles.red :
+				model.added ? styles.lightGreen :
+				model.untracked ? styles.lightBlue :
 				styles.darkGray;
 
 			text += statusStyle( '(' );
 
 			// Standard style if inited.
-			if ( data.init )
+			if ( model.isInit ) {
 				text += 'init';
-			else if ( data.detached )
-				text += statusStyle( 'detached:' + data.namerev );
-			else if ( data.merging )
-				text += statusStyle( 'merge:' + data.namerev + '<--' + data.merging );
-			else
-				text += statusStyle( data.branch );
-
-			if ( data.diverged )
-				text += styles.bold( styles.lightYellow( '↕' ) );
-			else {
-				if ( data.ahead )
-					text += styles.bold( styles.lightYellow( '↑' ) );
-				else if ( data.behind )
-					text += styles.bold( styles.lightYellow( '↓' ) );
+			} else if ( model.isDetached ) {
+				text += statusStyle( `detached:${ model.namerev }` );
+			} else if ( model.mergeHead ) {
+				text += statusStyle( `merge:${ model.namerev }<--${ model.mergeHead }` );
+			} else {
+				text += statusStyle( model.branch );
 			}
 
-			// No hash to be displayed if inited.
-			if ( !data.init )
-				text += ' ' + styles.bold( styles.darkGray( data.hash ) );
+			if ( model.hasDiverged ) {
+				text += styles.bold( styles.lightYellow( '↕' ) );
+			} else {
+				if ( model.ahead ) {
+					text += styles.bold( styles.lightYellow( '↑' ) );
+				} else if ( model.behind ) {
+					text += styles.bold( styles.lightYellow( '↓' ) );
+				}
+			}
 
-			if ( data.added )
-				text += styles.lightGreen( ' +' + data.added );
+			// No hash to be displayed if just inited.
+			if ( !model.isInit ) {
+				text += ' ' + styles.bold( styles.darkGray( model.hash ) );
+			}
 
-			if ( data.modified )
-				text += styles.red( ' M' + data.modified );
+			if ( model.added ) {
+				text += styles.lightGreen( ` +${ model.added }` );
+			}
 
-			if ( data.untracked )
-				text += styles.lightBlue( ' ?' + data.untracked );
+			if ( model.modified ) {
+				text += styles.red( ` M${ model.modified }` );
+			}
+
+			if ( model.untracked ) {
+				text += styles.lightBlue( ` ?${ model.untracked }` );
+			}
 
 			text += statusStyle( ') ' );
 		}
 
-		text += styles.lightGreen( data.user + '@' + data.host );
-		text += ' ' + styles.lightCyan( data.path + this.promptChar + ' ' );
+		text += styles.lightGreen( `${ model.user }@${ model.hostname }` );
+		text += ' ' + styles.lightCyan( `${ model.path }${ this.promptChar } ` );
 
 		return text;
 	}
