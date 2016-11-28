@@ -1,5 +1,5 @@
 /**
- * @license Copyright (c) 2003-2016, Aleksander Nowodziński. All rights reserved.
+ * @license MIT
  */
 'use strict';
 

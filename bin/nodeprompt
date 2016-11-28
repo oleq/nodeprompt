@@ -1,11 +1,11 @@
 #!/usr/bin/env node
 
 /**
- * @license Copyright (c) 2003-2016, Aleksander Nowodziński. All rights reserved.
+ * The main program to be executed to generate PS1 (bash).
+ *
+ * @license MIT
  */
 
 'use strict';
 
-const Nodeprompt = require( '../lib/nodeprompt.js' );
-
-process.stdout.write( new Nodeprompt().print() );
+process.stdout.write( new ( require( '../lib/nodeprompt.js' ) )().print() );

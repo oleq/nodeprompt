@@ -1,5 +1,5 @@
 /**
- * @license Copyright (c) 2003-2016, Aleksander Nowodziński. All rights reserved.
+ * @license MIT
  */
 'use strict';
 
@@ -263,14 +263,12 @@ describe( '_getStatus()', () => {
 	} );
 } );
 
-function test( status, expected ) {
-	const model = {};
-	const stub = sinon.stub( nodeprompt, '_getRawStatus' ).returns( status );
-
-	nodeprompt._getStatus( model );
+function test( rawStatus, expected ) {
+	const stub = sinon.stub( nodeprompt, '_getRawStatus' ).returns( rawStatus );
+	const status = nodeprompt._getStatus( {} );
 
 	for ( let exp in expected ) {
-		expect( model[ exp ] ).to.equal( expected[ exp ] );
+		expect( status[ exp ] ).to.equal( expected[ exp ] );
 	}
 
 	stub.restore();
