@@ -265,11 +265,8 @@ describe( '_getStatus()', () => {
 
 function test( rawStatus, expected ) {
 	const stub = sinon.stub( nodeprompt, '_getRawStatus' ).returns( rawStatus );
-	const status = nodeprompt._getStatus( {} );
 
-	for ( let exp in expected ) {
-		expect( status[ exp ] ).to.equal( expected[ exp ] );
-	}
+	expect( nodeprompt._getStatus( {} ) ).to.deep.equal( expected );
 
 	stub.restore();
 }
