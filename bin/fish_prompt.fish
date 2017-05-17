@@ -1,5 +1,5 @@
 function fish_prompt
 	if test -d "$PWD";
-		echo -e (nodeprompt)
+		echo -e (nodeprompt --fish)
 	end
 end

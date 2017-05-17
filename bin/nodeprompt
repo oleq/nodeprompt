@@ -8,4 +8,7 @@
 
 'use strict';
 
-process.stdout.write( new ( require( '../lib/nodeprompt.js' ) )().print() );
+const Nodeprompt = require( '../lib/nodeprompt.js' );
+const prompt = new Nodeprompt().print();
+
+process.stdout.write( prompt );
