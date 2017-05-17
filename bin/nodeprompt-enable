@@ -9,7 +9,7 @@
 function NODEPROMPT_PS1() {
 	# Check whether current directory still exists (#2).
 	if [ -d "$PWD" ]; then
-		PS1=$(/Users/oleq/nodeprompt/bin/nodeprompt)
+		PS1=$(nodeprompt)
 	fi
 }
 
