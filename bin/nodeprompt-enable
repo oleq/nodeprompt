@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# A bash script which enables Nodeprompt by setting PS1.
+# A bash script which enables Nodeprompt by setting the PS1.
 # License: MIT.
 
 # Abort if not an interactive shell.

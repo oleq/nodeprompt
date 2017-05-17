@@ -1,6 +1,7 @@
 /**
  * @license MIT
  */
+
 'use strict';
 
 const stylesRaw = require( '../lib/styles.js' )( true );

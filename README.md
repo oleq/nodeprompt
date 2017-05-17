@@ -4,8 +4,8 @@ Nodeprompt &mdash; Pretty Git prompt for Bash
 ## Requirements
 
 * Bash (tested with 3.2.x).
-* Node.js (tested with 0.10.x, 5.7.x).
-* Git (tested with 1.9.x, 2.7.x).
+* Node.js (tested with 0.10.x, 5.7.x, 6.9.x).
+* Git (tested with 1.9.x, 2.7.x, 2.11.x).
 
 ## Demo
 
@@ -26,11 +26,11 @@ Nodeprompt &mdash; Pretty Git prompt for Bash
 
 ## Configuration and customization
 
-Nodeprompt is configurable, so things like the length of SHA-1 hash or the number of levels displayed in the path can be adjusted. It is also possible to create a new prompt template from scratch.
+Nodeprompt is configurable, so things like the length of SHA-1 hash or the number of levels displayed in the path can be adjusted. It is also possible to create a new prompt template from scratch, if that's what you want to do tonight.
 
 **Note**: You **don't** have to configure Nodeprompt. By default, it uses [`config.default.js`](https://github.com/oleq/nodeprompt/blob/master/config.default.js).
 
-Config file is a plain Node.js module. To configure your prompt, create `~/.nodeprompt/config.user.js` file with `module.exports` declaration
+Config file is a plain Node.js module. To configure your prompt, create a `~/.nodeprompt/config.user.js` file with `module.exports` declaration
 
 ```js
 module.exports = {
@@ -40,22 +40,13 @@ module.exports = {
 
 or simply copy `config.default.js` there and modify it. Refer to documentation inside [`config.default.js`](https://github.com/oleq/nodeprompt/blob/master/config.default.js) to learn more.
 
-## FAQ
-
-1. **Q**: Why is data collected in Bash? Why not `require( 'child_process' ).exec`? Come on man, what's wrong with you?
- <br/> 
- **A**: Child Process is really, really slow and makes the prompt laggy. UX is the priority and, as long as Bash is faster, that's the right way to do it. I don't like it either.
-2. **Q**: &lt;xyz&gt; sucks in `bin/nodeprompt-enable`. Why?
- <br/> 
- **A**: It's a Bash script. So what?
-
 ## License
  
 MIT/X11. See the [LICENSE](LICENSE) file to know more.
 
 ## Misc
 
-Kudos to [Leonid Volnitsky](https://github.com/lvv) for his [git-prompt](https://github.com/lvv/git-prompt), which was an inspiration.
+Kudos to [Leonid Volnitsky](https://github.com/lvv) for his [git-prompt](https://github.com/lvv/git-prompt), an inspiration to create this project.
 
 ## Tests
 

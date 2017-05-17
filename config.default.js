@@ -3,12 +3,13 @@
  *
  * @license MIT
  */
+
 'use strict';
 
 /**
- * NOTE: This is a default Nodeprompt config. Do not modify it,
- *       but create `~/.nodeprompt/config.user.js` file of the same structure with
- *       your values instead.
+ * NOTE: This is a default Nodeprompt config. Do not modify it unless you like surprises.
+ *       Create a `~/.nodeprompt/config.user.js` file with the same structure and
+ *       your config values instead.
  */
 module.exports = {
 	/**
@@ -46,24 +47,36 @@ module.exports = {
 	 * @cfg {Function} template
 	 * @param {Object} model Status model object, which consists of the following items:
 	 *
-	 * * `added`		(_Number_)	 	Number of files staged for the commit.
-	 * * `ahead`		(_Number_)	 	Number of commits ahead of the remote branch.
-	 * * `behind`		(_Number_)	 	Number of commits behind the remote branch.
-	 * * `branch`		(_String_)	 	Name of the branch.
-	 * * `detached`		(_Boolean_)	 	Indicates detached state of the branch (HEAD points to a commit, unnamed branch).
-	 * * `hasDiverged`		(_Boolean_)	 	`true` if both `ahead` and `behind` are different than `0`.
-	 * * `git`			(_String_)	 	Contains path to `.git` directory (i.e. to tell if in Git repository).
-	 * * `hash`			(_String_)	 	SHA-1 hash of the current commit (see `hashLength` config option).
-	 * * `host`			(_String_)	 	Name of the host.
-	 * * `init`			(_Boolean_)	 	Indicates that repository has just been initialized.
-	 * * `merging`		(_Boolean_)	 	Indicates merge operation.
-	 * * `modified`		(_Number_)	 	Number of modified but unstaged files.
-	 * * `path`			(_String_)	 	Current directory path (see `pathLength` config option).
-	 * * `untracked`	(_Number_)	 	Number of untracked files in the repository.
-	 * * `user`			(_String_)	 	Username.
+	 * Environmental/general repository info:
+	 *  * `pwd`
+	 *  * `home`
+	 *  * `gitDir`
+	 *  * `hostname`
+	 *  * `username`
+	 *  * `path`
+	 *  * `namerev`
+	 *  * `head`
+	 *  * `hash`
+	 *  * `mergeHead`
+	 *
+	 * Booleans:
+	 *  * `isGit`
+	 *  * `isInit`
+	 *  * `isBisecting`
+	 *  * `isDetached`
+	 *  * `isMerging`
+	 *
+	 * Status specific:
+	 *  * `modified`
+	 *  * `added`
+	 *  * `untracked`
+	 *  * `ahead`
+	 *  * `behind`
+	 *  * `branch`
+	 *  * `hasDiverged`
 	 *
 	 * @param {Object} style An object consisting of a number of functions, all of which accept and return
-	 * _String_, dedicated to change style, background or text color. See `styles.js` to know more.
+	 * `String`, dedicated to change style, background or text color. See `styles.js` to know more.
 	 */
 	template( model, styles ) {
 		let text = '';

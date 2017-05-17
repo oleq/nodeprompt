@@ -1,6 +1,7 @@
 /**
  * @license MIT
  */
+
 'use strict';
 
 const Nodeprompt = require( '../lib/nodeprompt.js' );
