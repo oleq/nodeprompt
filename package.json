@@ -1,11 +1,8 @@
 {
   "name": "nodeprompt",
-  "version": "0.0.5",
-  "description": "Pretty Git prompt for Bash",
-  "main": "nodeprompt.js",
-  "dependencies": {
-    "optimist": "~0.6"
-  },
+  "version": "1.0.0",
+  "description": "A smart Git prompt for your terminal",
+  "main": "lib/nodeprompt.js",
   "devDependencies": {
     "chai": "^3.5.0",
     "jshint": "^2.9.1",
@@ -26,7 +23,9 @@
   "keywords": [
     "git",
     "command",
-    "prompt"
+    "prompt",
+    "bash",
+    "node.js"
   ],
   "author": {
     "name": "Aleksander Nowodzinski",
