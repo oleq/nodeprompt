@@ -48,6 +48,10 @@ MIT/X11. See the [LICENSE](LICENSE) file to know more.
 
 Kudos to [Leonid Volnitsky](https://github.com/lvv) for his [git-prompt](https://github.com/lvv/git-prompt), an inspiration to create this project.
 
+## How to contribute?
+
+Clone the repository to `/path/nodeprompt` and put `. /path/nodeprompt/bin/nodeprompt-enable` in your `~/.bashrc` or `~/.bash_profile` file. Source it or restart the terminal.
+
 ## Tests
 
 Call `npm test` to run tests.
