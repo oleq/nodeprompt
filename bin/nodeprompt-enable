@@ -9,7 +9,8 @@
 function NODEPROMPT_PS1() {
 	# Check whether current directory still exists (#2).
 	if [ -d "$PWD" ]; then
-		PS1=$(nodeprompt)
+		DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+		PS1=$($DIR/nodeprompt)
 	fi
 }
 
