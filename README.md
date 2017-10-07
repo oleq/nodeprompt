@@ -55,9 +55,49 @@ module.exports = {
 
 or simply copy `config.default.js` there and modify it. Refer to documentation inside [`config.default.js`](https://github.com/oleq/nodeprompt/blob/master/config.default.js) to learn more.
 
+## Using as a library
+
+Nodeprompt can be used as a utility to obtain the status of the Git repository. Use the `model` property to build your own prompt or logger on top of the library:
+
+```js
+const Nodeprompt = require( './lib/nodeprompt.js' );
+const prompt = new Nodeprompt();
+
+console.log( prompt.model );
+
+> { 
+	pwd: '/Users/oleq/nodeprompt',
+	home: '/Users/oleq',
+	gitDir: '.git',
+	isGit: true,
+	hostname: 'MBP',
+	username: 'oleq',
+	path: '~/nodeprompt',
+	namerev: 'v1.0',
+	head: 'ref: refs/heads/v1.0',
+	hash: 'b22bb89',
+	mergeHead: '',
+	isInit: false,
+	isBisecting: false,
+	isDetached: false,
+	isMerging: false,
+	modified: 2,
+	added: 0,
+	untracked: 0,
+	ahead: 2,
+	behind: 0,
+	branch: 'v1.0',
+	hasDiverged: false 
+}
+```
+
 ## Found a bug?
 
 Create an issue [here](https://github.com/oleq/nodeprompt/issues).
+
+## How to contribute?
+
+Clone the repository to `/path/to/nodeprompt` and put `. /path/to/nodeprompt/bin/nodeprompt-enable` in your `~/.bashrc` or `~/.bash_profile` file. Source it or restart the terminal.
 
 ## License
  
@@ -66,10 +106,6 @@ MIT/X11. See the [LICENSE](LICENSE) file to know more.
 ## Misc
 
 Kudos to [Leonid Volnitsky](https://github.com/lvv) for [git-prompt](https://github.com/lvv/git-prompt), an inspiration to create this project.
-
-## How to contribute?
-
-Clone the repository to `/path/to/nodeprompt` and put `. /path/to/nodeprompt/bin/nodeprompt-enable` in your `~/.bashrc` or `~/.bash_profile` file. Source it or restart the terminal.
 
 ## Tests
 
