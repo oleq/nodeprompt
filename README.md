@@ -3,9 +3,12 @@ Nodeprompt &mdash; Pretty Git prompt for Bash
 
 ## Requirements
 
-* Bash (tested with 3.2.x).
-* Node.js (tested with 0.10.x, 5.7.x, 6.9.x).
-* Git (tested with 1.9.x, 2.7.x, 2.11.x).
+* Bash 3.2.x
+* [Fish](https://fishshell.com/) 2.5.x (experimental)
+* [Node.js](https://nodejs.org/) (tested with 0.10.x, 5.7.x, 6.9.x).
+* [Git](https://git-scm.com/) (tested with 1.9.x, 2.7.x, 2.11.x, 2.14.x).
+
+**Note:** There is a good change Nodeprompt will work with other configurations—just give it a shot.
 
 ## Demo
 
@@ -13,20 +16,32 @@ Nodeprompt &mdash; Pretty Git prompt for Bash
 
 ## Installation
 
-1. Call `npm install -g nodeprompt`.
+### Bash
+
+1. Call `npm install -g nodeprompt` first.
 1. Put the following line
 
-  ```
-  . nodeprompt-enable
-  ```
+   ```bash
+   . nodeprompt-enable
+   ```
 
- in your `~/.bashrc` or `~/.bash_profile` file.
-1. Re&ndash;open terminal window or source the file, i.e. `source ~/.bashrc`.
+   in your `~/.bashrc` or `~/.bash_profile` file.
+1. Re&ndash;open the terminal window or source the file, i.e. `source ~/.bashrc`.
+1. Enjoy your beautiful prompt!
+
+### Fish (experimental)
+
+1. Locate the path to the package (`npm install -g nodeprompt`) in your OS or [clone Nodeprompt](#how-to-contribute) from GitHub.
+1. Create a symlink to the fish script:
+   ```bash
+   ln -s path/to/nodeprompt/bin/fish_prompt.fish ~/.config/fish/functions/fish_prompt.fish
+   ```
+1. Re&ndash;open the terminal window.
 1. Enjoy your beautiful prompt!
 
 ## Configuration and customization
 
-Nodeprompt is configurable, so things like the length of SHA-1 hash or the number of levels displayed in the path can be adjusted. It is also possible to create a new prompt template from scratch, if that's what you want to do tonight.
+Nodeprompt is configurable and things like the length of the SHA-1 hash or the number of levels displayed in the path can be adjusted. It is also possible to create a new prompt template from scratch, if that's what you want to do tonight.
 
 **Note**: You **don't** have to configure Nodeprompt. By default, it uses [`config.default.js`](https://github.com/oleq/nodeprompt/blob/master/config.default.js).
 
@@ -40,17 +55,21 @@ module.exports = {
 
 or simply copy `config.default.js` there and modify it. Refer to documentation inside [`config.default.js`](https://github.com/oleq/nodeprompt/blob/master/config.default.js) to learn more.
 
+## Found a bug?
+
+Create an issue [here](https://github.com/oleq/nodeprompt/issues).
+
 ## License
  
 MIT/X11. See the [LICENSE](LICENSE) file to know more.
 
 ## Misc
 
-Kudos to [Leonid Volnitsky](https://github.com/lvv) for his [git-prompt](https://github.com/lvv/git-prompt), an inspiration to create this project.
+Kudos to [Leonid Volnitsky](https://github.com/lvv) for [git-prompt](https://github.com/lvv/git-prompt), an inspiration to create this project.
 
 ## How to contribute?
 
-Clone the repository to `/path/nodeprompt` and put `. /path/nodeprompt/bin/nodeprompt-enable` in your `~/.bashrc` or `~/.bash_profile` file. Source it or restart the terminal.
+Clone the repository to `/path/to/nodeprompt` and put `. /path/to/nodeprompt/bin/nodeprompt-enable` in your `~/.bashrc` or `~/.bash_profile` file. Source it or restart the terminal.
 
 ## Tests
 
