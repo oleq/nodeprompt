@@ -16,7 +16,7 @@ describe( 'Nodeprompt', () => {
 				expect( config.hashLength ).to.equal( 7 );
 				expect( config.pathLength ).to.equal( 3 );
 				expect( config.promptChar ).to.equal( '>' );
-				expect( config.template ).to.be.a.function;
+				expect( config.template ).to.be.a( 'function' );
 			} );
 
 			it( 'accepts a custom config (full)', () => {
@@ -82,7 +82,7 @@ describe( 'Nodeprompt', () => {
 		it( 'provides #styles', () => {
 			const prompt = new Nodeprompt();
 
-			expect( prompt.styles ).to.be.an.object;
+			expect( prompt.styles ).to.be.an( 'object' );
 			expect( Object.keys( prompt.styles ) ).to.have.length( 37 );
 		} );
 	} );

@@ -226,7 +226,7 @@ describe( 'print()', () => {
 
 function test( methods, expected ) {
 	for ( let m in methods ) {
-		sandbox.stub( Nodeprompt.prototype, m, methods[ m ] );
+		sandbox.stub( Nodeprompt.prototype, m ).callsFake( methods[ m ] );
 	}
 
 	const nodeprompt = new Nodeprompt();
