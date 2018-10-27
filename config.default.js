@@ -84,11 +84,11 @@ module.exports = {
 		if ( model.isGit ) {
 			const statusStyle =
 				model.isMerging ? styles.lightMagenta :
-				model.isDetached ? styles.red :
-				model.modified ? styles.red :
-				model.added ? styles.lightGreen :
-				model.untracked ? styles.lightBlue :
-				styles.darkGray;
+					model.isDetached ? styles.red :
+						model.modified ? styles.red :
+							model.added ? styles.lightGreen :
+								model.untracked ? styles.lightBlue :
+									styles.darkGray;
 
 			text += statusStyle( '(' );
 

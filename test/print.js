@@ -2,6 +2,8 @@
  * @license MIT
  */
 
+/* global process */
+
 'use strict';
 
 const stylesRaw = require( '../lib/styles.js' )( true );
@@ -221,6 +223,25 @@ describe( 'print()', () => {
 		);
 
 		process.env.PWD = PWD;
+	} );
+
+	it( 'uses default #styles', () => {
+		sandbox.stub( Nodeprompt.prototype, '_getGitDirectory' ).callsFake( () => '' );
+
+		const prompt = new Nodeprompt();
+
+		Object.assign( prompt.model, {
+			username: 'user',
+			hostname: 'host',
+			path: '/path'
+		} );
+
+		prompt.styles = {
+			lightGreen: text => `:LG:${ text }:LG:`,
+			lightCyan: text => `:LC:${ text }:LC:`
+		};
+
+		expect( prompt.print() ).to.equal( ':LG:user@host:LG: :LC:/path> :LC:' );
 	} );
 } );
 
