@@ -6,7 +6,8 @@
   "devDependencies": {
     "chai": "^4.1.2",
     "mocha": "^4.0.1",
-    "sinon": "^4.0.1"
+    "sinon": "^4.0.1",
+    "eslint": "^5.7.0"
   },
   "bin": {
     "nodeprompt-enable": "bin/nodeprompt-enable",
