@@ -8,7 +8,7 @@ Nodeprompt &mdash; Pretty Git prompt for Bash
 * [Node.js](https://nodejs.org/) (tested with 0.10.x, 5.7.x, 6.9.x).
 * [Git](https://git-scm.com/) (tested with 1.9.x, 2.7.x, 2.11.x, 2.14.x).
 
-**Note:** There is a good change Nodeprompt will work with other configurations—just give it a shot.
+**Note:** There is a good change Nodeprompt will work with other configurations — just give it a shot and let me know!
 
 ## Demo
 
