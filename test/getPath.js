@@ -14,6 +14,7 @@ describe( '_getPath()', () => {
 	} );
 
 	it( 'returns path with default config (out of home)', () => {
+		test( 'a', 						'/x', 				'/a' );
 		test( '/', 						'/x', 				'/' );
 		test( '/a', 					'/x', 				'/a' );
 		test( '/a/b', 					'/x', 				'/a/b' );

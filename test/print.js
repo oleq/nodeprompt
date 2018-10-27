@@ -58,6 +58,34 @@ describe( 'print()', () => {
 		);
 	} );
 
+	it( 'generates PS1 when modified', () => {
+		test(
+			{
+				_getGitDirectory: () => '.git',
+				_getRawStatus: () =>
+					'## master\n' +
+						' M zz\n',
+				_getNameRev: () => 'master',
+				_getHash: () => '44c100b03e7a6ff3d8e1ba0b536ea9b6f830f6ab',
+			},
+			'(master 44c100b M1) user@host /path> '
+		);
+	} );
+
+	it( 'generates PS1 when untracked', () => {
+		test(
+			{
+				_getGitDirectory: () => '.git',
+				_getRawStatus: () =>
+					'## master\n' +
+						'?? zz\n',
+				_getNameRev: () => 'master',
+				_getHash: () => '44c100b03e7a6ff3d8e1ba0b536ea9b6f830f6ab',
+			},
+			'(master 44c100b ?1) user@host /path> '
+		);
+	} );
+
 	it( 'generates PS1 when detached', () => {
 		test(
 			{

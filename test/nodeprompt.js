@@ -2,11 +2,25 @@
  * @license MIT
  */
 
+/* global process */
+
 'use strict';
 
 const Nodeprompt = require( '../lib/nodeprompt.js' );
+const proxyquire = require( 'proxyquire' ).noCallThru();
+const env = process.env;
 
 describe( 'Nodeprompt', () => {
+	let sandbox;
+
+	beforeEach( () => {
+		sandbox = sinon.sandbox.create();
+	} );
+
+	afterEach( () => {
+		sandbox.restore();
+	} );
+
 	describe( 'constructor', () => {
 		describe( 'config', () => {
 			it( 'provides the default #config', () => {
@@ -48,6 +62,72 @@ describe( 'Nodeprompt', () => {
 				expect( config.promptChar ).to.equal( '>' );
 				expect( config.template() ).to.equal( 'bar' );
 			} );
+
+			it( 'searches for userconfig in env.HOME', () => {
+				const restoreEnv = stubEnv( {
+					HOME: 'path/to/home',
+					HOMEPATH: null,
+					USERPROFILE: null,
+				} );
+
+				const configPath = env.HOME + '/.nodeprompt/config.user.js';
+				const stubs = {};
+
+				stubs[ configPath ] = {
+					foo: 'bar'
+				};
+
+				const Nodeprompt = proxyquire( '../lib/nodeprompt.js', stubs );
+				const prompt = new Nodeprompt();
+
+				expect( prompt.config.foo ).to.equal( 'bar' );
+
+				restoreEnv();
+			} );
+
+			it( 'searches for userconfig in env.HOMEPATH', () => {
+				const restoreEnv = stubEnv( {
+					HOME: null,
+					HOMEPATH: 'path/to/home',
+					USERPROFILE: null,
+				} );
+
+				const configPath = env.HOMEPATH + '/.nodeprompt/config.user.js';
+				const stubs = {};
+
+				stubs[ configPath ] = {
+					foo: 'bar'
+				};
+
+				const Nodeprompt = proxyquire( '../lib/nodeprompt.js', stubs );
+				const prompt = new Nodeprompt();
+
+				expect( prompt.config.foo ).to.equal( 'bar' );
+
+				restoreEnv();
+			} );
+
+			it( 'searches for userconfig in env.USERPROFILE', () => {
+				const restoreEnv = stubEnv( {
+					HOME: null,
+					HOMEPATH: null,
+					USERPROFILE: 'path/to/home',
+				} );
+
+				const configPath = env.USERPROFILE + '/.nodeprompt/config.user.js';
+				const stubs = {};
+
+				stubs[ configPath ] = {
+					foo: 'bar'
+				};
+
+				const Nodeprompt = proxyquire( '../lib/nodeprompt.js', stubs );
+				const prompt = new Nodeprompt();
+
+				expect( prompt.config.foo ).to.equal( 'bar' );
+
+				restoreEnv();
+			} );
 		} );
 
 		it( 'provides #model', () => {
@@ -87,3 +167,23 @@ describe( 'Nodeprompt', () => {
 		} );
 	} );
 } );
+
+function stubEnv( stub ) {
+	const originalValues = {};
+
+	for ( const prop in stub ) {
+		originalValues[ prop ] = env[ prop ];
+
+		if ( !stub[ prop ] ) {
+			delete env[ prop ];
+		} else {
+			env[ prop ] = stub[ prop ];
+		}
+	}
+
+	return () => {
+		for ( const prop in stub ) {
+			env[ prop ] = originalValues[ prop ];
+		}
+	};
+}
