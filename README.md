@@ -107,7 +107,8 @@ MIT/X11. See the [LICENSE](LICENSE) file to know more.
 
 Kudos to [Leonid Volnitsky](https://github.com/lvv) for [git-prompt](https://github.com/lvv/git-prompt), an inspiration to create this project.
 
-## Tests
+## Tests and development
 
 * Call `npm run test` to run tests.
 * Call `npm run coverage` to run tests with code coverage report in `./coverage`.
+* Call `npm run lint` to run ESLint.
