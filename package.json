@@ -17,8 +17,8 @@
   },
   "scripts": {
     "test": "mocha",
-	"coverage": "nyc --reporter=html mocha",
-	"lint": "./node_modules/.bin/eslint lib/**/*.js test/**/*.js bin/nodeprompt"
+    "coverage": "nyc --reporter=html --reporter=text mocha",
+    "lint": "./node_modules/.bin/eslint lib/**/*.js test/**/*.js bin/nodeprompt"
   },
   "repository": {
     "type": "git",

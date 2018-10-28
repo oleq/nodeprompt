@@ -1,12 +1,12 @@
 #!/usr/bin/env node
 
-/* global process */
-
 /**
  * The main program to be executed to generate PS1 (bash).
  *
  * @license MIT
  */
+
+/* global process */
 
 'use strict';
 
