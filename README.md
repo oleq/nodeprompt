@@ -65,7 +65,7 @@ const prompt = new Nodeprompt();
 
 console.log( prompt.model );
 
-> { 
+> {
    pwd: '/Users/oleq/nodeprompt',
    home: '/Users/oleq',
    gitDir: '.git',
@@ -87,7 +87,7 @@ console.log( prompt.model );
    ahead: 2,
    behind: 0,
    branch: 'v1.0',
-   hasDiverged: false 
+   hasDiverged: false
 }
 ```
 
@@ -100,7 +100,7 @@ Create an issue [here](https://github.com/oleq/nodeprompt/issues).
 Clone the repository to `/path/to/nodeprompt` and put `. /path/to/nodeprompt/bin/nodeprompt-enable` in your `~/.bashrc` or `~/.bash_profile` file. Source it or restart the terminal.
 
 ## License
- 
+
 MIT/X11. See the [LICENSE](LICENSE) file to know more.
 
 ## Misc
@@ -109,4 +109,5 @@ Kudos to [Leonid Volnitsky](https://github.com/lvv) for [git-prompt](https://git
 
 ## Tests
 
-Call `npm test` to run tests.
+* Call `npm run test` to run tests.
+* Call `npm run coverage` to run tests with code coverage report in `./coverage`.
