@@ -1,4 +1,4 @@
-Nodeprompt &mdash; Pretty Git prompt for Bash
+Nodeprompt &mdash; A smart Git prompt for your terminal
 ==================================================
 
 ## Requirements
