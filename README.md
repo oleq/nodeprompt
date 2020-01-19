@@ -6,7 +6,8 @@ Smart Git prompt for your terminal made in Node.js.
 ## Requirements
 
 * Bash 3.2.x
-* [Fish](https://fishshell.com/) 2.5.x (experimental)
+* [Fish](https://fishshell.com/) 2.5.x
+* Zsh 5.3
 * [Node.js](https://nodejs.org/) (tested with 0.10.x, 5.7.x, 6.9.x).
 * [Git](https://git-scm.com/) (tested with 1.9.x, 2.7.x, 2.11.x, 2.14.x).
 
@@ -24,19 +25,32 @@ Smart Git prompt for your terminal made in Node.js.
 1. Put the following line
 
    ```bash
-   . nodeprompt-enable
+   . nodeprompt-enable-bash
    ```
 
    in your `~/.bashrc` or `~/.bash_profile` file.
 1. Re&ndash;open the terminal window or source the file, i.e. `source ~/.bashrc`.
 1. Enjoy your beautiful prompt!
 
-### Fish (experimental)
+### Zsh
 
-1. Locate the path to the package (`npm install -g nodeprompt`) in your OS or [clone Nodeprompt](#how-to-contribute) from GitHub.
-1. Create a symlink to the fish script:
+1. Call `npm install -g nodeprompt` first.
+1. Put the following lines
+
+	```bash
+	. nodeprompt-enable-zsh
+	```
+
+   in your `~/.zshrc` file.
+1. Re&ndash;open the terminal window or source the file, i.e. `source ~/.zshrc`.
+1. Enjoy your beautiful prompt!
+
+### Fish
+
+1. Call `npm install -g nodeprompt` first.
+1. Create a symlink to the `fish_prompt.fish` function file:
    ```bash
-   ln -s path/to/nodeprompt/bin/fish_prompt.fish ~/.config/fish/functions/fish_prompt.fish
+   ln -s (npm ls -g nodeprompt -p)/bin/fish_prompt.fish ~/.config/fish/functions/fish_prompt.fish
    ```
 1. Re&ndash;open the terminal window.
 1. Enjoy your beautiful prompt!
@@ -74,7 +88,7 @@ console.log( prompt.model );
    isGit: true,
    hostname: 'MBP',
    username: 'oleq',
-   path: '~/nodeprompt',
+   path: [ '~', 'nodeprompt' ],
    namerev: 'v1.0',
    head: 'ref: refs/heads/v1.0',
    hash: 'b22bb89',
@@ -99,7 +113,7 @@ Create an issue [here](https://github.com/oleq/nodeprompt/issues).
 
 ## How to contribute?
 
-Clone the repository to `/path/to/nodeprompt` and put `. /path/to/nodeprompt/bin/nodeprompt-enable` in your `~/.bashrc` or `~/.bash_profile` file. Source it or restart the terminal.
+Clone the repository to `/path/to/nodeprompt` and put `. /path/to/nodeprompt/bin/nodeprompt-bash` in your `~/.bashrc` or `~/.bash_profile` file. Source it or restart the terminal.
 
 ## License
 

@@ -6,11 +6,11 @@
  * @license MIT
  */
 
-/* global process */
+/* global process, __dirname */
 
 'use strict';
 
-const Nodeprompt = require( '../lib/nodeprompt.js' );
+const Nodeprompt = require( __dirname + '/../lib/nodeprompt.js' );
 const prompt = new Nodeprompt().print();
 
 process.stdout.write( prompt );
