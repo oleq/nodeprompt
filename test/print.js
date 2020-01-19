@@ -261,7 +261,7 @@ describe( 'print()', () => {
 		Object.assign( prompt.model, {
 			username: 'user',
 			hostname: 'host',
-			path: '/path'
+			path: [ '/', 'path' ]
 		} );
 
 		prompt.styles = {
@@ -283,7 +283,7 @@ function test( methods, expected ) {
 	Object.assign( nodeprompt.model, {
 		username: 'user',
 		hostname: 'host',
-		path: '/path'
+		path: [ '/', 'path' ]
 	} );
 
 	expect( nodeprompt.print( stylesRaw ) ).to.equal( expected );
