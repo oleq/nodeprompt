@@ -25,7 +25,7 @@ describe( 'print()', () => {
 			{
 				_getGitDirectory: () => ''
 			},
-			'user@host /path> '
+			' user@host  ///path  '
 		);
 	} );
 
@@ -36,7 +36,7 @@ describe( 'print()', () => {
 				_getRawStatus: () => '## Initial commit on master',
 				_getHash: () => 'HEAD'
 			},
-			'(init) user@host /path> '
+			' user@host  ///path  init  '
 		);
 	} );
 
@@ -54,7 +54,7 @@ describe( 'print()', () => {
 				_getNameRev: () => 'master',
 				_getHash: () => '44c100b03e7a6ff3d8e1ba0b536ea9b6f830f6ab',
 			},
-			'(master 44c100b +4 ?1) user@host /path> '
+			' user@host  ///path   master (44c100b)  +4  ?1  '
 		);
 	} );
 
@@ -68,7 +68,7 @@ describe( 'print()', () => {
 				_getNameRev: () => 'master',
 				_getHash: () => '44c100b03e7a6ff3d8e1ba0b536ea9b6f830f6ab',
 			},
-			'(master 44c100b M1) user@host /path> '
+			' user@host  ///path   master (44c100b)  M1  '
 		);
 	} );
 
@@ -82,7 +82,7 @@ describe( 'print()', () => {
 				_getNameRev: () => 'master',
 				_getHash: () => '44c100b03e7a6ff3d8e1ba0b536ea9b6f830f6ab',
 			},
-			'(master 44c100b ?1) user@host /path> '
+			' user@host  ///path   master (44c100b)  ?1  '
 		);
 	} );
 
@@ -95,7 +95,7 @@ describe( 'print()', () => {
 				_getHash: () => 'a89567c12b55b2d1b5635fb1178c1a1106511403',
 				_getHead: () => 'a89567c12b55b2d1b5635fb1178c1a1106511403',
 			},
-			'(detached:master~1 a89567c) user@host /path> '
+			' user@host  ///path  detached:master~1 (a89567c)  '
 		);
 	} );
 
@@ -110,7 +110,7 @@ describe( 'print()', () => {
 				_getHead: () => 'ref: refs/heads/master',
 				_getMergeHead: () => 'test-head'
 			},
-			'(merge:master<--test-head dcd0272 M1) user@host /path> '
+			' user@host  ///path  merge:master←test-head (dcd0272)  M1  '
 		);
 	} );
 
@@ -123,7 +123,7 @@ describe( 'print()', () => {
 				_getHash: () => '76d59cb10e172bbc525dcab83edb0d074a9f8e1e',
 				_getHead: () => '76d59cb10e172bbc525dcab83edb0d074a9f8e1e',
 			},
-			'(detached:master 76d59cb) user@host /path> '
+			' user@host  ///path  detached:master (76d59cb)  '
 		);
 	} );
 
@@ -137,7 +137,7 @@ describe( 'print()', () => {
 				_getHead: () => 'ref: refs/heads/a/1234',
 				_getIsBisecting: () => true
 			},
-			'(detached:a/1234 3bf5643) user@host /path> '
+			' user@host  ///path  detached:a/1234 (3bf5643)  '
 		);
 	} );
 
@@ -150,7 +150,7 @@ describe( 'print()', () => {
 				_getHash: () => '3bf5643b7066572b1efc4cd0421bae95cb3786c2',
 				_getHead: () => 'ref: refs/heads/a/1234',
 			},
-			'(a/1234↑ 3bf5643) user@host /path> '
+			' user@host  ///path  ↑  a/1234 (3bf5643)  '
 		);
 	} );
 
@@ -163,7 +163,7 @@ describe( 'print()', () => {
 				_getHash: () => '3bf5643b7066572b1efc4cd0421bae95cb3786c2',
 				_getHead: () => 'ref: refs/heads/a/1234',
 			},
-			'(a/1234↓ 3bf5643) user@host /path> '
+			' user@host  ///path  ↓  a/1234 (3bf5643)  '
 		);
 	} );
 
@@ -176,7 +176,7 @@ describe( 'print()', () => {
 				_getHash: () => '3bf5643b7066572b1efc4cd0421bae95cb3786c2',
 				_getHead: () => 'ref: refs/heads/a/1234',
 			},
-			'(a/1234↕ 3bf5643) user@host /path> '
+			' user@host  ///path  ↕  a/1234 (3bf5643)  '
 		);
 	} );
 
@@ -194,7 +194,7 @@ describe( 'print()', () => {
 				_getHash: () => '44c100b03e7a6ff3d8e1ba0b536ea9b6f830f6ab',
 				_getHead: () => 'ref: refs/heads/master',
 			},
-			'user@host /path> '
+			' user@host  ///path  '
 		);
 	} );
 
@@ -208,7 +208,7 @@ describe( 'print()', () => {
 			{
 				_getGitDirectory: () => '/foo/bar/.git',
 			},
-			'user@host /path> '
+			' user@host  ///path  '
 		);
 
 		process.env.PWD = PWD;
@@ -223,7 +223,7 @@ describe( 'print()', () => {
 			{
 				_getGitDirectory: () => '/foo/bar/.git',
 			},
-			'user@host /path> '
+			' user@host  ///path  '
 		);
 
 		process.env.PWD = PWD;
@@ -247,7 +247,7 @@ describe( 'print()', () => {
 				_getNameRev: () => 'master',
 				_getHash: () => '44c100b03e7a6ff3d8e1ba0b536ea9b6f830f6ab',
 			},
-			'(master 44c100b +4 ?1) user@host /path> '
+			' user@host  ///path   master (44c100b)  +4  ?1  '
 		);
 
 		process.env.PWD = PWD;
@@ -264,12 +264,13 @@ describe( 'print()', () => {
 			path: [ '/', 'path' ]
 		} );
 
-		prompt.styles = {
-			lightGreen: text => `:LG:${ text }:LG:`,
-			lightCyan: text => `:LC:${ text }:LC:`
-		};
+		prompt.styles = new Proxy( {}, {
+			get: ( obj, prop ) => {
+				return text => `<${ prop }>${ text }</${ prop }>`;
+			}
+		} );
 
-		expect( prompt.print() ).to.equal( ':LG:user@host:LG: :LC:/path> :LC:' );
+		expect( prompt.print() ).to.equal( '<bgBlue><white> </white></bgBlue><bold><bgBlue><white>user</white></bgBlue></bold><bgBlue><lightGray>@host </lightGray></bgBlue><bgLightGray><blue> </blue></bgLightGray><bgLightGray><darkGray>/</darkGray></bgLightGray><bgLightGray><darkGray>//</darkGray></bgLightGray><bold><bgLightGray><black>path</black></bgLightGray></bold><bgLightGray> </bgLightGray><lightGray></lightGray> ' );
 	} );
 } );
 

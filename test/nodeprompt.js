@@ -28,8 +28,7 @@ describe( 'Nodeprompt', () => {
 				const config = prompt.config;
 
 				expect( config.hashLength ).to.equal( 7 );
-				expect( config.pathLength ).to.equal( 3 );
-				expect( config.promptChar ).to.equal( '>' );
+				expect( config.pathLength ).to.equal( 2 );
 				expect( config.template ).to.be.a( 'function' );
 			} );
 
@@ -45,7 +44,6 @@ describe( 'Nodeprompt', () => {
 
 				expect( config.hashLength ).to.equal( 1 );
 				expect( config.pathLength ).to.equal( 2 );
-				expect( config.promptChar ).to.equal( 'foo' );
 				expect( config.template() ).to.equal( 'bar' );
 			} );
 
@@ -58,8 +56,7 @@ describe( 'Nodeprompt', () => {
 				const config = prompt.config;
 
 				expect( config.hashLength ).to.equal( 1 );
-				expect( config.pathLength ).to.equal( 3 );
-				expect( config.promptChar ).to.equal( '>' );
+				expect( config.pathLength ).to.equal( 2 );
 				expect( config.template() ).to.equal( 'bar' );
 			} );
 
