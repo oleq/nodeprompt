@@ -1,7 +1,7 @@
 Nodeprompt
 ==================================================
 
-Smart Git prompt for your terminal made in Node.js.
+A smart Git prompt for your terminal powered by Node.js.
 
 ## Requirements
 
