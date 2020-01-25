@@ -8,9 +8,9 @@
 
 const Nodeprompt = require( '../lib/nodeprompt.js' );
 
-let sandbox;
-
 describe( 'bin/nodeprompt', () => {
+	let sandbox;
+
 	beforeEach( () => {
 		sandbox = sinon.sandbox.create();
 	} );

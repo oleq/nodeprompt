@@ -23,9 +23,19 @@ describe( 'print()', () => {
 	it( 'generates PS1 when not Git repository', () => {
 		test(
 			{
-				_getGitDirectory: () => ''
+				_getGitDirectory: () => '',
 			},
 			' user@host  ///path  '
+		);
+	} );
+
+	it( 'generates PS1 when in the home folder (no Git repository)', () => {
+		test(
+			{
+				_getGitDirectory: () => '',
+				_getPath: () => [ '~', 'path', 'target' ]
+			},
+			' user@host  ~/path/target  '
 		);
 	} );
 
@@ -279,12 +289,17 @@ function test( methods, expected ) {
 		sandbox.stub( Nodeprompt.prototype, m ).callsFake( methods[ m ] );
 	}
 
+	if ( !methods._getPath ) {
+		sandbox.stub( Nodeprompt.prototype, '_getPath' ).callsFake( () => {
+			return [ '/', 'path' ];
+		} );
+	}
+
 	const nodeprompt = new Nodeprompt();
 
 	Object.assign( nodeprompt.model, {
 		username: 'user',
-		hostname: 'host',
-		path: [ '/', 'path' ]
+		hostname: 'host'
 	} );
 
 	expect( nodeprompt.print( stylesRaw ) ).to.equal( expected );
