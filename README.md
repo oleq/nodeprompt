@@ -3,6 +3,8 @@ Nodeprompt
 
 A smart Git prompt for your terminal powered by Node.js.
 
+![Staged, unstaged and untracked files](demo/git-various.png?raw=true)
+
 ## Requirements
 
 ### System
@@ -68,9 +70,9 @@ Some fonts support those symbols (glyphs) out–of–the–box, for instance, [F
 
 	Put the following lines:
 
-		```bash
-		. nodeprompt-enable-zsh
-		```
+	```bash
+	. nodeprompt-enable-zsh
+	```
 
 	in your `~/.zshrc` file. Re&ndash;open the terminal window or `source ~/.zshrc`.
 
