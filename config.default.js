@@ -1,5 +1,5 @@
 /**
- * A default configuration of the prompt.
+ * A default configuration of the nodeprompt.
  *
  * @license MIT
  */
@@ -21,20 +21,20 @@ module.exports = {
 
 	/**
 	 * Number of items to be displayed in the path. If the length of
-	 * PWD is greater than this value, path is truncated, i.e.
+	 * PWD is greater than this value, the path will be truncated.
 	 *
-	 * If PWD is `/first/second/third/fourth` and `pathLength` is 2,
-	 * path gets truncated:
+	 * For instance, if `PWD` is `/first/second/third/fourth` and `pathLength` is 2,
+	 * the path will be:
 	 *
 	 * 	~/...third/fourth>
 	 *
-	 * @cfg {Number} [pathLength=3]
+	 * @cfg {Number} [pathLength=2]
 	 */
 	pathLength: 2,
 
 	/**
 	 * Template (V-layer :P) of the prompt. A function, which converts status model into
-	 * a nice, colourful prompt string. You can take control of the look and feel of your
+	 * a nice, colorful prompt string. You can take control of the look and feel of your
 	 * bash prompt by creating your own `template` function.
 	 *
 	 * @cfg {Function} template
@@ -144,7 +144,7 @@ module.exports = {
 
 			let lastColor = statusColor;
 
-			// Standard style if inited.
+			// Standard style if in an empty (just initialized) repo.
 			if ( model.isInit ) {
 				addText( 'init', statusBgColor, fg( 'black' ) );
 			} else if ( model.isDetached ) {
@@ -156,7 +156,7 @@ module.exports = {
 				addText( model.branch , statusBgColor, fg( 'black' ), 'bold' );
 			}
 
-			// No hash to be displayed if just inited.
+			// No hash to be displayed if just initialized.
 			if ( !model.isInit ) {
 				addText( ' ', statusBgColor, fg( 'black' ) );
 				addText( '(' + model.hash + ')', statusBgColor, fg( 'black' ) );
