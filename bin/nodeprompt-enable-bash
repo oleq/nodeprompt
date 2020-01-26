@@ -1,0 +1,14 @@
+#!/bin/bash
+
+# A bash script which enables Nodeprompt by setting the PS1.
+# License: MIT.
+
+# Abort if not an interactive shell.
+[[ $- != *i* ]] && return
+
+NODEPROMPT() {
+	PS1=$(nodeprompt)
+}
+
+PROMPT_COMMAND=NODEPROMPT
+

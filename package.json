@@ -12,7 +12,8 @@
     "sinon": "^4.0.1"
   },
   "bin": {
-    "nodeprompt-enable": "bin/nodeprompt-enable",
+    "nodeprompt-enable-bash": "bin/nodeprompt-enable-bash",
+    "nodeprompt-enable-zsh": "bin/nodeprompt-enable-zsh",
     "nodeprompt": "bin/nodeprompt"
   },
   "scripts": {
@@ -44,5 +45,6 @@
   "bugs": {
     "url": "http://github.com/oleq/nodeprompt/issues"
   },
-  "homepage": "http://github.com/oleq/nodeprompt"
+  "homepage": "http://github.com/oleq/nodeprompt",
+  "dependencies": {}
 }

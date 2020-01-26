@@ -1,0 +1,8 @@
+#!/bin/zsh
+
+# A zsh script which enables Nodeprompt by setting the PS1.
+# License: MIT.
+
+setopt PROMPT_SUBST
+PROMPT='$(nodeprompt)'
+

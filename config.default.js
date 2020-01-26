@@ -1,5 +1,5 @@
 /**
- * A default configuration of the prompt.
+ * A default configuration of the nodeprompt.
  *
  * @license MIT
  */
@@ -21,27 +21,20 @@ module.exports = {
 
 	/**
 	 * Number of items to be displayed in the path. If the length of
-	 * PWD is greater than this value, path is truncated, i.e.
+	 * PWD is greater than this value, the path will be truncated.
 	 *
-	 * If PWD is `/first/second/third/fourth` and `pathLength` is 2,
-	 * path gets truncated:
+	 * For instance, if `PWD` is `/first/second/third/fourth` and `pathLength` is 2,
+	 * the path will be:
 	 *
 	 * 	~/...third/fourth>
 	 *
-	 * @cfg {Number} [pathLength=3]
+	 * @cfg {Number} [pathLength=2]
 	 */
-	pathLength: 3,
-
-	/**
-	 * The last character of the prompt.
-	 *
-	 * @cfg {String} [promptChar=">"]
-	 */
-	promptChar: '>',
+	pathLength: 2,
 
 	/**
 	 * Template (V-layer :P) of the prompt. A function, which converts status model into
-	 * a nice, colourful prompt string. You can take control of the look and feel of your
+	 * a nice, colorful prompt string. You can take control of the look and feel of your
 	 * bash prompt by creating your own `template` function.
 	 *
 	 * @cfg {Function} template
@@ -75,67 +68,134 @@ module.exports = {
 	 *  * `branch`
 	 *  * `hasDiverged`
 	 *
+	 * Powerline symbols: `      ☰ `
+	 *
 	 * @param {Object} style An object consisting of a number of functions, all of which accept and return
 	 * `String`, dedicated to change style, background or text color. See `styles.js` to know more.
 	 */
 	template( model, styles ) {
 		let text = '';
 
-		if ( model.isGit ) {
-			const statusStyle =
-				model.isMerging ? styles.lightMagenta :
-					model.isDetached ? styles.red :
-						model.modified ? styles.red :
-							model.added ? styles.lightGreen :
-								model.untracked ? styles.lightBlue :
-									styles.darkGray;
+		function addText( segment, ...styleNames ) {
+			for ( const styleName of styleNames ) {
+				segment = styles[ styleName ]( segment );
+			}
 
-			text += statusStyle( '(' );
+			text += segment;
+		}
 
-			// Standard style if inited.
-			if ( model.isInit ) {
-				text += 'init';
-			} else if ( model.isDetached ) {
-				text += statusStyle( `detached:${ model.namerev }` );
-			} else if ( model.isMerging ) {
-				text += statusStyle( `merge:${ model.namerev }<--${ model.mergeHead }` );
+		function fg( color ) {
+			return color;
+		}
+
+		function bg( color ) {
+			return `bg${ color.charAt( 0 ).toUpperCase() + color.substring( 1 ) }`;
+		}
+
+		addText( ' ', fg( 'white' ), bg( 'blue' ) );
+		addText( model.username, fg( 'white' ), bg( 'blue' ), 'bold' );
+		addText( '@' + model.hostname + ' ', fg( 'lightGray' ), bg( 'blue' ) );
+		addText( ' ', fg( 'blue' ), bg( 'lightGray' ) );
+
+		if ( model.path[ 0 ] !== '~' ) {
+			addText( '/', fg( 'darkGray' ), bg( 'lightGray' ) );
+		}
+
+		model.path.forEach( ( segment, index ) => {
+			if ( index !== model.path.length - 1 ) {
+				addText( segment + '/', fg( 'darkGray' ), bg( 'lightGray' ) );
 			} else {
-				text += statusStyle( model.branch );
+				addText( segment, fg( 'black' ), bg( 'lightGray' ), 'bold' );
+			}
+		} );
+
+		addText( ' ', bg( 'lightGray' ) );
+
+		if ( model.isGit ) {
+			let statusColor;
+
+			if ( model.isMerging ) {
+				statusColor = 'lightMagenta';
+			} else if ( model.isDetached ) {
+				statusColor = 'lightRed';
+			} else if ( model.hasDiverged || model.ahead || model.behind ) {
+				statusColor = 'lightYellow';
+			} else {
+				statusColor = 'white';
+			}
+
+			let statusBgColor = bg( statusColor );
+
+			if ( model.hasDiverged || model.ahead || model.behind ) {
+				addText( ' ', bg( 'lightYellow' ), 'lightGray' );
 			}
 
 			if ( model.hasDiverged ) {
-				text += styles.bold( styles.lightYellow( '↕' ) );
+				addText( '↕ ', bg( 'lightYellow' ), 'bold', fg( 'black' ) );
 			} else {
 				if ( model.ahead ) {
-					text += styles.bold( styles.lightYellow( '↑' ) );
+					addText( '↑ ', bg( 'lightYellow' ), 'bold', fg( 'black' ) );
 				} else if ( model.behind ) {
-					text += styles.bold( styles.lightYellow( '↓' ) );
+					addText( '↓ ', bg( 'lightYellow' ), 'bold', fg( 'black' ) );
+				} else {
+					addText( ' ', statusBgColor, fg( 'lightGray' ) );
 				}
 			}
 
-			// No hash to be displayed if just inited.
+			let lastColor = statusColor;
+
+			// Standard style if in an empty (just initialized) repo.
+			if ( model.isInit ) {
+				addText( 'init', statusBgColor, fg( 'black' ) );
+			} else if ( model.isDetached ) {
+				addText( `detached:${ model.namerev }`, statusBgColor, fg( 'black' ), 'bold' );
+			} else if ( model.isMerging ) {
+				addText( `merge:${ model.namerev }←${ model.mergeHead }`, statusBgColor, fg( 'black' ), 'bold' );
+			} else {
+				addText( ' ', statusBgColor, fg( 'black' ) );
+				addText( model.branch , statusBgColor, fg( 'black' ), 'bold' );
+			}
+
+			// No hash to be displayed if just initialized.
 			if ( !model.isInit ) {
-				text += ' ' + styles.bold( styles.darkGray( model.hash ) );
+				addText( ' ', statusBgColor, fg( 'black' ) );
+				addText( '(' + model.hash + ')', statusBgColor, fg( 'black' ) );
+				lastColor = statusColor;
 			}
 
 			if ( model.added ) {
-				text += styles.lightGreen( ` +${ model.added }` );
+				addText( ' ', fg( lastColor ), bg( lastColor ) );
+				addText( '', fg( lastColor ), bg( 'green' ) );
+				addText( ' ', bg( 'green' ) );
+				addText( `+${ model.added }`, bg( 'green' ), 'black' );
+
+				lastColor = 'green';
 			}
 
 			if ( model.modified ) {
-				text += styles.red( ` M${ model.modified }` );
+				addText( ' ', fg( lastColor ), bg( lastColor ) );
+				addText( '', fg( lastColor ), bg( 'red' ) );
+				addText( ' ', bg( 'red' ) );
+				addText( `M${ model.modified }`, bg( 'red' ), 'black' );
+
+				lastColor = 'red';
 			}
 
 			if ( model.untracked ) {
-				text += styles.lightBlue( ` ?${ model.untracked }` );
+				addText( ' ', fg( lastColor ), bg( lastColor ) );
+				addText( '', fg( lastColor ), bg( 'lightBlue' ) );
+				addText( ' ', bg( 'lightBlue' ) );
+				addText( `?${ model.untracked }`, bg( 'lightBlue' ), 'black' );
+
+				lastColor = 'lightBlue';
 			}
 
-			text += statusStyle( ') ' );
+			addText( ' ', fg( lastColor ), bg( lastColor ) );
+			addText( '', fg( lastColor ), bg( 'black' ) );
+		} else {
+			addText( '', 'lightGray' );
 		}
 
-		text += styles.lightGreen( `${ model.username }@${ model.hostname }` );
-		text += ' ' + styles.lightCyan( `${ model.path }${ this.promptChar } ` );
-
-		return text;
+		return text + ' ';
 	}
 };
