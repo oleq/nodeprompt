@@ -4,7 +4,7 @@ Nodeprompt
 [![npm version](https://badge.fury.io/js/nodeprompt.svg)](https://www.npmjs.com/package/nodeprompt)
 [![Build Status](https://travis-ci.org/oleq/nodeprompt.svg?branch=master)](https://travis-ci.org/oleq/nodeprompt)
 [![Dependency Status](https://img.shields.io/david/oleq/nodeprompt.svg)](https://david-dm.org/oleq/nodeprompt)
-[![devDependency Status](https://img.shields.io/david/dev/oleq/nodeprompt.svg)](https://david-dm.org/ckeditor/nodeprompt?type=dev)
+[![devDependency Status](https://img.shields.io/david/dev/oleq/nodeprompt.svg)](https://david-dm.org/oleq/nodeprompt?type=dev)
 
 A smart Git prompt for your terminal powered by Node.js.
 
