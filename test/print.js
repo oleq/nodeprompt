@@ -77,6 +77,7 @@ describe( 'print()', () => {
 					'## master\n' +
 						' M zz\n',
 				_getNameRev: () => 'master',
+				_getHead: () => 'ref: refs/heads/master',
 				_getHash: () => '44c100b03e7a6ff3d8e1ba0b536ea9b6f830f6ab',
 			},
 			' user@host  ///path   master (44c100b)  M1  '
@@ -91,6 +92,7 @@ describe( 'print()', () => {
 					'## master\n' +
 						'?? zz\n',
 				_getNameRev: () => 'master',
+				_getHead: () => 'ref: refs/heads/master',
 				_getHash: () => '44c100b03e7a6ff3d8e1ba0b536ea9b6f830f6ab',
 			},
 			' user@host  ///path   master (44c100b)  ?1  '
@@ -256,6 +258,7 @@ describe( 'print()', () => {
 						'M  dd\n' +
 						'?? qwe',
 				_getNameRev: () => 'master',
+				_getHead: () => 'ref: refs/heads/master',
 				_getHash: () => '44c100b03e7a6ff3d8e1ba0b536ea9b6f830f6ab',
 			},
 			' user@host  ///path   master (44c100b)  +4  ?1  '
