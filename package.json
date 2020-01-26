@@ -1,6 +1,6 @@
 {
   "name": "nodeprompt",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "description": "A smart Git prompt for your terminal",
   "main": "lib/nodeprompt.js",
   "devDependencies": {
@@ -16,6 +16,11 @@
     "nodeprompt-enable-zsh": "bin/nodeprompt-enable-zsh",
     "nodeprompt": "bin/nodeprompt"
   },
+  "files": [
+    "bin",
+    "lib",
+    "config.default.js"
+  ],
   "scripts": {
     "test": "mocha",
     "coverage": "nyc --reporter=html --reporter=text mocha",
