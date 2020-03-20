@@ -7,10 +7,9 @@
 'use strict';
 
 describe( 'styles', () => {
-	let sandbox, styles;
+	let sandbox;
 
 	beforeEach( () => {
-		styles = require( '../lib/styles.js' )();
 		sandbox = sinon.sandbox.create();
 	} );
 
@@ -19,6 +18,8 @@ describe( 'styles', () => {
 	} );
 
 	it( 'are defined as functions', () => {
+		const styles = require( '../lib/styles.js' )();
+
 		expect( styles ).to.be.an( 'object' );
 		expect( Object.keys( styles ) ).to.have.length( 37 );
 
@@ -27,12 +28,20 @@ describe( 'styles', () => {
 		}
 	} );
 
-	it( 'work in bash/zsh', () => {
+	it( 'work in bash', () => {
 		sandbox.stub( process, 'env' ).value( { 'SHELL': 'bin/bash' } );
 
 		const styles = require( '../lib/styles.js' )();
 
 		expect( styles.red( 'foo' ) ).to.equal( '\\[\u001b[31m\\]foo\\[\u001b[39m\\]' );
+	} );
+
+	it( 'work in zsh', () => {
+		sandbox.stub( process, 'env' ).value( { 'SHELL': 'bin/zsh' } );
+
+		const styles = require( '../lib/styles.js' )();
+
+		expect( styles.red( 'foo' ) ).to.equal( '%{\u001b[31m%}foo%{\u001b[39m%}' );
 	} );
 
 	it( 'work in fish', () => {
