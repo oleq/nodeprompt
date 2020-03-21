@@ -267,24 +267,50 @@ describe( 'print()', () => {
 		process.env.PWD = PWD;
 	} );
 
-	it( 'uses default #styles', () => {
-		sandbox.stub( Nodeprompt.prototype, '_getGitDirectory' ).callsFake( () => '' );
+	describe( 'with default styles', () => {
+		let prompt;
 
-		const prompt = new Nodeprompt();
+		beforeEach( () => {
+			sandbox.stub( Nodeprompt.prototype, '_getGitDirectory' ).callsFake( () => '' );
 
-		Object.assign( prompt.model, {
-			username: 'user',
-			hostname: 'host',
-			path: [ '/', 'path' ]
+			prompt = new Nodeprompt();
+
+			Object.assign( prompt.model, {
+				username: 'user',
+				hostname: 'host',
+				path: [ '/', 'path' ]
+			} );
+
+			prompt.styles = new Proxy( {}, {
+				get: ( obj, prop ) => {
+					return text => `<${ prop }>${ text }</${ prop }>`;
+				}
+			} );
 		} );
 
-		prompt.styles = new Proxy( {}, {
-			get: ( obj, prop ) => {
-				return text => `<${ prop }>${ text }</${ prop }>`;
-			}
+		it( 'should generate a full prompt for a git folder', () => {
+			Object.assign( prompt.model, {
+				isGit: true,
+				branch: 'master',
+				hash: '1234567'
+			} );
+
+			expect( prompt.print() ).to.equal( '<bgBlue><white> </white><bold><white>user</white></bold><lightGray>@host </lightGray></bgBlue><bgLightGray><blue> </blue></bgLightGray><bgLightGray><darkGray>/</darkGray><darkGray>//</darkGray><bold><black>path</black></bold> </bgLightGray><bgWhite><lightGray> </lightGray></bgWhite><bgWhite><black> </black><bold><black>master</black></bold><black> </black><black>(1234567)</black> </bgWhite><white> </white>' );
 		} );
 
-		expect( prompt.print() ).to.equal( '<bgBlue><white> </white></bgBlue><bold><bgBlue><white>user</white></bgBlue></bold><bgBlue><lightGray>@host </lightGray></bgBlue><bgLightGray><blue> </blue></bgLightGray><bgLightGray><darkGray>/</darkGray></bgLightGray><bgLightGray><darkGray>//</darkGray></bgLightGray><bold><bgLightGray><black>path</black></bgLightGray></bold><bgLightGray> </bgLightGray><lightGray></lightGray> ' );
+		// https://github.com/oleq/nodeprompt/issues/18
+		it( 'should generate a prompt when both diverged and merging', () => {
+			Object.assign( prompt.model, {
+				isGit: true,
+				hasDiverged: true,
+				isMerging: true,
+				namerev: 'foo',
+				mergeHead: 'bar',
+				hash: '1234567'
+			} );
+
+			expect( prompt.print() ).to.equal( '<bgBlue><white> </white><bold><white>user</white></bold><lightGray>@host </lightGray></bgBlue><bgLightGray><blue> </blue></bgLightGray><bgLightGray><darkGray>/</darkGray><darkGray>//</darkGray><bold><black>path</black></bold> </bgLightGray><bgLightMagenta><lightGray> </lightGray></bgLightMagenta><bgLightMagenta><black><bold>↕ </bold></black><bold><black>merge:foo←bar</black></bold><black> </black><black>(1234567)</black> </bgLightMagenta><lightMagenta> </lightMagenta>' );
+		} );
 	} );
 } );
 

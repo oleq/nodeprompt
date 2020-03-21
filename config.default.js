@@ -74,43 +74,60 @@ module.exports = {
 	 * `String`, dedicated to change style, background or text color. See `styles.js` to know more.
 	 */
 	template( model, styles ) {
-		let text = '';
+		const chunks = [];
 
 		function addText( segment, ...styleNames ) {
 			for ( const styleName of styleNames ) {
 				segment = styles[ styleName ]( segment );
 			}
 
-			text += segment;
+			return segment;
 		}
 
-		function fg( color ) {
-			return color;
-		}
+		function addChunk( callback, bgColor ) {
+			const textParts = callback();
+			let text = '';
 
-		function bg( color ) {
-			return `bg${ color.charAt( 0 ).toUpperCase() + color.substring( 1 ) }`;
-		}
-
-		addText( ' ', fg( 'white' ), bg( 'blue' ) );
-		addText( model.username, fg( 'white' ), bg( 'blue' ), 'bold' );
-		addText( '@' + model.hostname + ' ', fg( 'lightGray' ), bg( 'blue' ) );
-		addText( ' ', fg( 'blue' ), bg( 'lightGray' ) );
-
-		if ( model.path[ 0 ] !== '~' ) {
-			addText( '/', fg( 'darkGray' ), bg( 'lightGray' ) );
-		}
-
-		model.path.forEach( ( segment, index ) => {
-			if ( index !== model.path.length - 1 ) {
-				addText( segment + '/', fg( 'darkGray' ), bg( 'lightGray' ) );
-			} else {
-				addText( segment, fg( 'black' ), bg( 'lightGray' ), 'bold' );
+			for ( const [ ...partArgs ] of textParts ) {
+				text += addText( ...partArgs );
 			}
-		} );
 
-		addText( ' ', bg( 'lightGray' ) );
+			chunks.push( {
+				// Finally wrap all the chunk in the background style.
+				text: addText( text, bg( bgColor ) ),
+				bgColor
+			} );
+		}
 
+		// User name and host.
+		addChunk( () => [
+			[ ' ', fg( 'white' ) ],
+			[ model.username, fg( 'white' ), 'bold' ],
+			[ '@' + model.hostname + ' ', fg( 'lightGray' ) ]
+		], 'blue' );
+
+		// CWD
+		addChunk( () => {
+			const parts = [];
+
+			if ( model.path[ 0 ] !== '~' ) {
+				parts.push( [ '/', fg( 'darkGray' ) ] );
+			}
+
+			model.path.forEach( ( segment, index ) => {
+				if ( index !== model.path.length - 1 ) {
+					parts.push( [ segment + '/', fg( 'darkGray' ) ] );
+				} else {
+					parts.push( [ segment, fg( 'black' ), 'bold' ] );
+				}
+			} );
+
+			parts.push( [ ' ' ] );
+
+			return parts;
+		}, 'lightGray' );
+
+		// GIT
 		if ( model.isGit ) {
 			let statusColor;
 
@@ -124,78 +141,91 @@ module.exports = {
 				statusColor = 'white';
 			}
 
-			let statusBgColor = bg( statusColor );
+			// Diverged/Ahead/Behind + Hash
+			addChunk( () => {
+				const parts = [];
 
-			if ( model.hasDiverged || model.ahead || model.behind ) {
-				addText( ' ', bg( 'lightYellow' ), 'lightGray' );
-			}
-
-			if ( model.hasDiverged ) {
-				addText( '↕ ', bg( 'lightYellow' ), 'bold', fg( 'black' ) );
-			} else {
-				if ( model.ahead ) {
-					addText( '↑ ', bg( 'lightYellow' ), 'bold', fg( 'black' ) );
+				if ( model.hasDiverged ) {
+					parts.push( [ '↕ ', 'bold', fg( 'black' ) ] );
+				} else if ( model.ahead ) {
+					parts.push( [ '↑ ', 'bold', fg( 'black' ) ] );
 				} else if ( model.behind ) {
-					addText( '↓ ', bg( 'lightYellow' ), 'bold', fg( 'black' ) );
-				} else {
-					addText( ' ', statusBgColor, fg( 'lightGray' ) );
+					parts.push( [ '↓ ', 'bold', fg( 'black' ) ] );
 				}
-			}
 
-			let lastColor = statusColor;
+				// Standard style if in an empty (just initialized) repo.
+				if ( model.isInit ) {
+					parts.push( [ 'init', fg( 'black' ) ] );
+				} else if ( model.isDetached ) {
+					parts.push( [ `detached:${ model.namerev }`, fg( 'black' ), 'bold' ] );
+				} else if ( model.isMerging ) {
+					parts.push( [ `merge:${ model.namerev }←${ model.mergeHead }`, fg( 'black' ), 'bold' ] );
+				} else {
+					parts.push(
+						[ ' ', fg( 'black' ) ],
+						[ model.branch, fg( 'black' ), 'bold' ]
+					);
+				}
 
-			// Standard style if in an empty (just initialized) repo.
-			if ( model.isInit ) {
-				addText( 'init', statusBgColor, fg( 'black' ) );
-			} else if ( model.isDetached ) {
-				addText( `detached:${ model.namerev }`, statusBgColor, fg( 'black' ), 'bold' );
-			} else if ( model.isMerging ) {
-				addText( `merge:${ model.namerev }←${ model.mergeHead }`, statusBgColor, fg( 'black' ), 'bold' );
-			} else {
-				addText( ' ', statusBgColor, fg( 'black' ) );
-				addText( model.branch , statusBgColor, fg( 'black' ), 'bold' );
-			}
+				// No hash to be displayed if just initialized.
+				if ( !model.isInit ) {
+					parts.push(
+						[ ' ', fg( 'black' ) ],
+						[ '(' + model.hash + ')', fg( 'black' ) ]
+					);
+				}
 
-			// No hash to be displayed if just initialized.
-			if ( !model.isInit ) {
-				addText( ' ', statusBgColor, fg( 'black' ) );
-				addText( '(' + model.hash + ')', statusBgColor, fg( 'black' ) );
-				lastColor = statusColor;
-			}
+				parts.push( [ ' ' ] );
+
+				return parts;
+			}, statusColor );
 
 			if ( model.added ) {
-				addText( ' ', fg( lastColor ), bg( lastColor ) );
-				addText( '', fg( lastColor ), bg( 'green' ) );
-				addText( ' ', bg( 'green' ) );
-				addText( `+${ model.added }`, bg( 'green' ), 'black' );
-
-				lastColor = 'green';
+				addChunk( () => [
+					[ `+${ model.added }`, fg( 'black' ) ],
+					[ ' ' ],
+				], 'green' );
 			}
 
 			if ( model.modified ) {
-				addText( ' ', fg( lastColor ), bg( lastColor ) );
-				addText( '', fg( lastColor ), bg( 'red' ) );
-				addText( ' ', bg( 'red' ) );
-				addText( `M${ model.modified }`, bg( 'red' ), 'black' );
-
-				lastColor = 'red';
+				addChunk( () => [
+					[ `M${ model.modified }`, 'black' ],
+					[ ' ' ],
+				], 'red' );
 			}
 
 			if ( model.untracked ) {
-				addText( ' ', fg( lastColor ), bg( lastColor ) );
-				addText( '', fg( lastColor ), bg( 'lightBlue' ) );
-				addText( ' ', bg( 'lightBlue' ) );
-				addText( `?${ model.untracked }`, bg( 'lightBlue' ), 'black' );
-
-				lastColor = 'lightBlue';
+				addChunk( () => [
+					[ `?${ model.untracked }`, 'black' ],
+					[ ' ' ],
+				], 'lightBlue' );
 			}
-
-			addText( ' ', fg( lastColor ), bg( lastColor ) );
-			addText( '', fg( lastColor ) );
-		} else {
-			addText( '', fg( 'lightGray' ) );
 		}
 
-		return text + ' ';
+		let lastChunkBgColor;
+
+		return chunks
+			.reverse()
+			.reduce( ( accumulator, chunk ) => {
+				const symbolStyles = [
+					fg( chunk.bgColor )
+				];
+
+				if ( lastChunkBgColor ) {
+					symbolStyles.push( bg( lastChunkBgColor ) );
+				}
+
+				lastChunkBgColor = chunk.bgColor;
+
+				return chunk.text + addText( ' ', ...symbolStyles ) + accumulator;
+			}, '' );
 	}
 };
+
+function fg( color ) {
+	return color;
+}
+
+function bg( color ) {
+	return `bg${ color.charAt( 0 ).toUpperCase() + color.substring( 1 ) }`;
+}
