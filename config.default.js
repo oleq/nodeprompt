@@ -191,9 +191,9 @@ module.exports = {
 			}
 
 			addText( ' ', fg( lastColor ), bg( lastColor ) );
-			addText( '', fg( lastColor ), bg( 'black' ) );
+			addText( '', fg( lastColor ) );
 		} else {
-			addText( '', 'lightGray' );
+			addText( '', fg( 'lightGray' ) );
 		}
 
 		return text + ' ';
