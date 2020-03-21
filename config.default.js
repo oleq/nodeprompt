@@ -101,8 +101,7 @@ module.exports = {
 
 		// User name and host.
 		addChunk( () => [
-			[ ' ', fg( 'white' ) ],
-			[ model.username, fg( 'white' ), 'bold' ],
+			[ ` ${model.username}`, fg( 'white' ), 'bold' ],
 			[ '@' + model.hostname + ' ', fg( 'lightGray' ) ]
 		], 'blue' );
 
@@ -170,8 +169,7 @@ module.exports = {
 				// No hash to be displayed if just initialized.
 				if ( !model.isInit ) {
 					parts.push(
-						[ ' ', fg( 'black' ) ],
-						[ '(' + model.hash + ')', fg( 'black' ) ]
+						[ ' (' + model.hash + ')', fg( 'black' ) ]
 					);
 				}
 
@@ -182,22 +180,19 @@ module.exports = {
 
 			if ( model.added ) {
 				addChunk( () => [
-					[ `+${ model.added }`, fg( 'black' ) ],
-					[ ' ' ],
+					[ `+${ model.added } `, fg( 'black' ) ],
 				], 'green' );
 			}
 
 			if ( model.modified ) {
 				addChunk( () => [
-					[ `M${ model.modified }`, 'black' ],
-					[ ' ' ],
+					[ `M${ model.modified } `, 'black' ],
 				], 'red' );
 			}
 
 			if ( model.untracked ) {
 				addChunk( () => [
-					[ `?${ model.untracked }`, 'black' ],
-					[ ' ' ],
+					[ `?${ model.untracked } `, 'black' ],
 				], 'lightBlue' );
 			}
 		}

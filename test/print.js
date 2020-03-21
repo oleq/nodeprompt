@@ -295,7 +295,7 @@ describe( 'print()', () => {
 				hash: '1234567'
 			} );
 
-			expect( prompt.print() ).to.equal( '<bgBlue><white> </white><bold><white>user</white></bold><lightGray>@host </lightGray></bgBlue><bgLightGray><blue> </blue></bgLightGray><bgLightGray><darkGray>/</darkGray><darkGray>//</darkGray><bold><black>path</black></bold> </bgLightGray><bgWhite><lightGray> </lightGray></bgWhite><bgWhite><black> </black><bold><black>master</black></bold><black> </black><black>(1234567)</black> </bgWhite><white> </white>' );
+			expect( prompt.print() ).to.equal( '<bgBlue><bold><white> user</white></bold><lightGray>@host </lightGray></bgBlue><bgLightGray><blue> </blue></bgLightGray><bgLightGray><darkGray>/</darkGray><darkGray>//</darkGray><bold><black>path</black></bold> </bgLightGray><bgWhite><lightGray> </lightGray></bgWhite><bgWhite><black> </black><bold><black>master</black></bold><black> (1234567)</black> </bgWhite><white> </white>' );
 		} );
 
 		// https://github.com/oleq/nodeprompt/issues/18
@@ -309,7 +309,7 @@ describe( 'print()', () => {
 				hash: '1234567'
 			} );
 
-			expect( prompt.print() ).to.equal( '<bgBlue><white> </white><bold><white>user</white></bold><lightGray>@host </lightGray></bgBlue><bgLightGray><blue> </blue></bgLightGray><bgLightGray><darkGray>/</darkGray><darkGray>//</darkGray><bold><black>path</black></bold> </bgLightGray><bgLightMagenta><lightGray> </lightGray></bgLightMagenta><bgLightMagenta><black><bold>↕ </bold></black><bold><black>merge:foo←bar</black></bold><black> </black><black>(1234567)</black> </bgLightMagenta><lightMagenta> </lightMagenta>' );
+			expect( prompt.print() ).to.equal( '<bgBlue><bold><white> user</white></bold><lightGray>@host </lightGray></bgBlue><bgLightGray><blue> </blue></bgLightGray><bgLightGray><darkGray>/</darkGray><darkGray>//</darkGray><bold><black>path</black></bold> </bgLightGray><bgLightMagenta><lightGray> </lightGray></bgLightMagenta><bgLightMagenta><black><bold>↕ </bold></black><bold><black>merge:foo←bar</black></bold><black> (1234567)</black> </bgLightMagenta><lightMagenta> </lightMagenta>' );
 		} );
 	} );
 } );
