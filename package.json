@@ -5,7 +5,7 @@
   "main": "lib/nodeprompt.js",
   "devDependencies": {
     "chai": "^4.1.2",
-    "eslint": "^5.7.0",
+    "eslint": "^6.8.0",
     "mocha": "^4.0.1",
     "nyc": "^13.1.0",
     "proxyquire": "^2.1.0",

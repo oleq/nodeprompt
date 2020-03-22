@@ -74,151 +74,180 @@ module.exports = {
 	 * `String`, dedicated to change style, background or text color. See `styles.js` to know more.
 	 */
 	template( model, styles ) {
-		const chunks = [];
+		const promptSegments = [];
 
-		function addText( segment, ...styleNames ) {
+		// It styles the provided textContent using arbitrary text styles.
+		//
+		//		text( 'some text', 'red', bg( 'black' ), 'bold' ); // -> <bold><bgBlack><red>some text</red></bgBlack></bold>
+		//
+		function text( textContent, ...styleNames ) {
 			for ( const styleName of styleNames ) {
-				segment = styles[ styleName ]( segment );
+				textContent = styles[ styleName ]( textContent );
 			}
 
-			return segment;
+			return textContent;
 		}
 
-		function addChunk( callback, bgColor ) {
-			const textParts = callback();
-			let text = '';
+		// Creates a segment ("segment ") of the prompt with a background color.
+		//
+		//		addSegment( () => [
+		//			[ 'foo', 'white', 'bold' ],
+		//			[ 'bar', 'lightGray' ]
+		//		], 'blue' );
+		//
+		// creates the following text in the prompt
+		//
+		//		<bgBlue>
+		//			<bold><white>foo</white></bold>
+		//			<lightGray>foo</lightGray>
+		//		</bgBlue>
+		//
+		function addSegment( getParts, bgColor ) {
+			const textParts = getParts();
+			let segmentText = '';
 
-			for ( const [ ...partArgs ] of textParts ) {
-				text += addText( ...partArgs );
+			for ( const textPart of textParts ) {
+				segmentText += text( ...textPart );
 			}
 
-			chunks.push( {
-				// Finally wrap all the chunk in the background style.
-				text: addText( text, bg( bgColor ) ),
+			// Wrap all the parts in the background color style.
+			promptSegments.push( {
+				text: text( segmentText, bg( bgColor ) ),
 				bgColor
 			} );
 		}
 
 		// User name and host.
-		addChunk( () => [
-			[ ` ${model.username}`, fg( 'white' ), 'bold' ],
-			[ '@' + model.hostname + ' ', fg( 'lightGray' ) ]
-		], 'blue' );
+		getUserAndHostSegment( addSegment, model );
 
-		// CWD
-		addChunk( () => {
-			const parts = [];
-
-			if ( model.path[ 0 ] !== '~' ) {
-				parts.push( [ '/', fg( 'darkGray' ) ] );
-			}
-
-			model.path.forEach( ( segment, index ) => {
-				if ( index !== model.path.length - 1 ) {
-					parts.push( [ segment + '/', fg( 'darkGray' ) ] );
-				} else {
-					parts.push( [ segment, fg( 'black' ), 'bold' ] );
-				}
-			} );
-
-			parts.push( [ ' ' ] );
-
-			return parts;
-		}, 'lightGray' );
+		// Current working directory path.
+		getCwdSegment( addSegment, model, styles );
 
 		// GIT
 		if ( model.isGit ) {
-			let statusColor;
+			// Diverged/Ahead/Behind, Init/Detached/Merging/Branch+Hash.
+			addGitBranchSegment( addSegment, model );
 
-			if ( model.isMerging ) {
-				statusColor = 'lightMagenta';
-			} else if ( model.isDetached ) {
-				statusColor = 'lightRed';
-			} else if ( model.hasDiverged || model.ahead || model.behind ) {
-				statusColor = 'lightYellow';
-			} else {
-				statusColor = 'white';
-			}
-
-			// Diverged/Ahead/Behind + Hash
-			addChunk( () => {
-				const parts = [];
-
-				if ( model.hasDiverged ) {
-					parts.push( [ '↕ ', 'bold', fg( 'black' ) ] );
-				} else if ( model.ahead ) {
-					parts.push( [ '↑ ', 'bold', fg( 'black' ) ] );
-				} else if ( model.behind ) {
-					parts.push( [ '↓ ', 'bold', fg( 'black' ) ] );
-				}
-
-				// Standard style if in an empty (just initialized) repo.
-				if ( model.isInit ) {
-					parts.push( [ 'init', fg( 'black' ) ] );
-				} else if ( model.isDetached ) {
-					parts.push( [ `detached:${ model.namerev }`, fg( 'black' ), 'bold' ] );
-				} else if ( model.isMerging ) {
-					parts.push( [ `merge:${ model.namerev }←${ model.mergeHead }`, fg( 'black' ), 'bold' ] );
-				} else {
-					parts.push(
-						[ ' ', fg( 'black' ) ],
-						[ model.branch, fg( 'black' ), 'bold' ]
-					);
-				}
-
-				// No hash to be displayed if just initialized.
-				if ( !model.isInit ) {
-					parts.push(
-						[ ' (' + model.hash + ')', fg( 'black' ) ]
-					);
-				}
-
-				parts.push( [ ' ' ] );
-
-				return parts;
-			}, statusColor );
-
-			if ( model.added ) {
-				addChunk( () => [
-					[ `+${ model.added } `, fg( 'black' ) ],
-				], 'green' );
-			}
-
-			if ( model.modified ) {
-				addChunk( () => [
-					[ `M${ model.modified } `, 'black' ],
-				], 'red' );
-			}
-
-			if ( model.untracked ) {
-				addChunk( () => [
-					[ `?${ model.untracked } `, 'black' ],
-				], 'lightBlue' );
-			}
+			// Added/Modified/Untracked.
+			addGitStageSegment( addSegment, model );
 		}
 
-		let lastChunkBgColor;
+		let lastSegmentBgColor;
 
-		return chunks
+		return promptSegments
 			.reverse()
-			.reduce( ( accumulator, chunk ) => {
-				const symbolStyles = [
-					fg( chunk.bgColor )
-				];
+			.reduce( ( accumulator, segment ) => {
+				const symbolStyles = [ segment.bgColor ];
 
-				if ( lastChunkBgColor ) {
-					symbolStyles.push( bg( lastChunkBgColor ) );
+				if ( lastSegmentBgColor ) {
+					symbolStyles.push( bg( lastSegmentBgColor ) );
 				}
 
-				lastChunkBgColor = chunk.bgColor;
+				lastSegmentBgColor = segment.bgColor;
 
-				return chunk.text + addText( ' ', ...symbolStyles ) + accumulator;
+				return segment.text + text( ' ', ...symbolStyles ) + accumulator;
 			}, '' );
 	}
 };
 
-function fg( color ) {
-	return color;
+function getUserAndHostSegment( addSegment, model ) {
+	addSegment( () => [
+		[ ` ${model.username}`, 'white', 'bold' ],
+		[ '@' + model.hostname + ' ', 'lightGray' ]
+	], 'blue' );
+}
+
+function getCwdSegment( addSegment, model ) {
+	addSegment( () => {
+		const parts = [];
+
+		if ( model.path[ 0 ] !== '~' ) {
+			parts.push( [ '/', 'darkGray' ] );
+		}
+
+		model.path.forEach( ( segment, index ) => {
+			if ( index !== model.path.length - 1 ) {
+				parts.push( [ segment + '/', 'darkGray' ] );
+			} else {
+				parts.push( [ segment, 'black', 'bold' ] );
+			}
+		} );
+
+		parts.push( [ ' ' ] );
+
+		return parts;
+	}, 'lightGray' );
+}
+
+function addGitBranchSegment( addSegment, model ) {
+	let statusColor;
+
+	if ( model.isMerging ) {
+		statusColor = 'lightMagenta';
+	} else if ( model.isDetached ) {
+		statusColor = 'lightRed';
+	} else if ( model.hasDiverged || model.ahead || model.behind ) {
+		statusColor = 'lightYellow';
+	} else {
+		statusColor = 'white';
+	}
+
+	addSegment( () => {
+		const parts = [];
+
+		if ( model.hasDiverged ) {
+			parts.push( [ '↕ ', 'bold', 'black' ] );
+		} else if ( model.ahead ) {
+			parts.push( [ '↑ ', 'bold', 'black' ] );
+		} else if ( model.behind ) {
+			parts.push( [ '↓ ', 'bold', 'black' ] );
+		}
+
+		// Standard style if in an empty (just initialized) repo.
+		if ( model.isInit ) {
+			parts.push( [ 'init', 'black' ] );
+		} else if ( model.isDetached ) {
+			parts.push( [ `detached:${ model.namerev }`, 'black', 'bold' ] );
+		} else if ( model.isMerging ) {
+			parts.push( [ `merge:${ model.namerev }←${ model.mergeHead }`, 'black', 'bold' ] );
+		} else {
+			parts.push(
+				[ ' ', 'black' ],
+				[ model.branch, 'black', 'bold' ]
+			);
+		}
+
+		// No hash to be displayed if just initialized.
+		if ( !model.isInit ) {
+			parts.push(
+				[ ' (' + model.hash + ')', 'black' ]
+			);
+		}
+
+		parts.push( [ ' ' ] );
+
+		return parts;
+	}, statusColor );
+}
+
+function addGitStageSegment( addSegment, model ) {
+	if ( model.added ) {
+		addSegment( () => [
+			[ `+${ model.added } `, 'black' ],
+		], 'green' );
+	}
+
+	if ( model.modified ) {
+		addSegment( () => [
+			[ `M${ model.modified } `, 'black' ],
+		], 'red' );
+	}
+
+	if ( model.untracked ) {
+		addSegment( () => [
+			[ `?${ model.untracked } `, 'black' ],
+		], 'lightBlue' );
+	}
 }
 
 function bg( color ) {
